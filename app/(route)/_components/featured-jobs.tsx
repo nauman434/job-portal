@@ -108,7 +108,7 @@ const FeaturedJobs = () => {
             <p className='text-grey'>{jobs.length} recent jobs are posted</p>
           </div>
           {jobs.slice(displayIndex, displayIndex + 10).map((job, index) => (
-            <Link href={`/job/${job.id}`}>
+            <Link key={index} href={`/job/${job.id}`}>
               <div key={index} className='border p-[35px] rounded-xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
                 <div>
                   <h2 className='text-xl font-bold mb-2'>{job.Job}</h2>
