@@ -64,8 +64,8 @@ const PopularCategories = () => {
                     </div>
                     <div className='grid md:grid-cols-4 grid-cols-2 gap-8'>
                         {categories.map((category, index) => (
-                            <Link href={'/'}>
-                                <div key={index} className='flex gap-4 items-center p-[24px] group hover:bg-none cursor-pointer  transition-colors duration-200 hover:shadow-lg rounded-[12px]'>
+                            <Link href={'/'} key={index}>
+                                <div className='flex gap-4 items-center p-[24px] group hover:bg-none cursor-pointer  transition-colors duration-200 hover:shadow-lg rounded-[12px]'>
                                     <div className='w-[68px] h-[68px] rounded-[8px] bg-grey flex items-center justify-center group-hover:bg-primary transition-colors duration-200'>
                                         {React.createElement(category.icon, { className: 'w-8 h-8 text-white group-hover:text-[#E7F0FA]' })}
                                     </div>

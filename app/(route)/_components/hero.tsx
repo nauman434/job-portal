@@ -74,12 +74,12 @@ const Hero = () => {
                             Animation.</p>
                     </div>
                     <div className='flex gap-3 flex-wrap items-center justify-center'>
-                        {categories.map((cat) => (
-                            <Button variant={"outline"} className='bg-transparent h-[28px] rounded-full'>
+                        {categories.map((cat, index) => (
+                            <Button key={index} variant={"outline"} className='bg-transparent h-[28px] rounded-full'>
                                 <Link href={'/'}>
                                     {cat.name}
                                 </Link>
-                            </Button>
+                            </Button> 
                         ))}
                     </div>
                 </div>

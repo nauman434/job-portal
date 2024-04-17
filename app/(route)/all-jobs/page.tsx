@@ -23,7 +23,7 @@ function truncateText(text: any, limit: number): string {
 }
 
 
-const page = () => {
+const AllJobs = () => {
     const [jobs, setJobs] = useState<Job[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -101,4 +101,4 @@ const page = () => {
     )
 }
 
-export default page
+export default AllJobs
