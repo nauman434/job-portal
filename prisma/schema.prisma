@@ -16,6 +16,7 @@ model Job {
   State          Json?
   City           Json?
   Status         Json?
+  Type           Json?
   Salary         Json?
   postingDate    String?
   jobLink        String?

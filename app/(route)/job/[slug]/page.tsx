@@ -15,7 +15,7 @@ const JobDetail = () => {
   // State to hold the job data
   const [job, setJob] = useState<Job | null>(null);
   const param = useParams();
-  const slug = param.slug; // Get the slug from the URL
+  const slug = param.slug; 
 
   console.log('id', slug)
 

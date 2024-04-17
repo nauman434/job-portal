@@ -1,13 +1,13 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import Container from '@/components/container';
-import JobCard from '@/components/job-card';
-import { Button } from '@/components/ui/button';
-import { Job } from '@/interfaces/Job';
-import { Facebook } from 'lucide-react';
-import Link from 'next/link';
+import Container from '@/components/container'
+import { Button } from '@/components/ui/button'
+import { Clock, Search } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
 import Loading from '../loading';
+import { Job } from '@/interfaces/Job';
+import Link from 'next/link'
+import { Input } from '@/components/ui/input'
 
 function truncateText(text: string, limit: number): string {
   const words = text.split(/\s+/);
@@ -21,6 +21,7 @@ const FeaturedJobs = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [displayIndex, setDisplayIndex] = useState(0);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -55,40 +56,108 @@ const FeaturedJobs = () => {
     fetchJobs();
   }, []);
 
-  if (isLoading) return <Loading/>;
+  const loadMoreJobs = () => {
+    setDisplayIndex(prevIndex => prevIndex + 10);
+  };
+
+  const goBack = () => {
+    setDisplayIndex(prevIndex => Math.max(0, prevIndex - 10));
+  };
+
+  const endIndex = Math.min(displayIndex + 10, jobs.length);
+
+  const uniqueTypes = new Set<string>();
+  const uniqueJobs = jobs.slice(150, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
+
+
+  if (isLoading) return <Loading />;
   if (error) return <p>{error}</p>;
 
+
   return (
-    <section className='pt-[100px]'>
-      <Container>
-        <div className='flex flex-col gap-[50px] items-center'>
-          <div>
-            <h2 className='text-primary text-center text-3xl font-semibold'>Featured Jobs</h2>
-          </div>
-          <div className="grid md:grid-cols-3 grid-cols-2 gap-4"> {jobs.slice(0, 6).map((job) => (
-            <JobCard
-              key={job.id}
-              jobId={job.id}
-              jobType={job.Role || 'N/A'}
-              title={job.Job || 'No Job Title'}
-              description={truncateText(job.jobDescription || 'No Description Available', 35)}
-              postedTime={job.postingDate ? `${job.postingDate.toLocaleString()}` : 'N/A'}
-              salaryRange={job.Salary ? `${job.Salary.toLocaleString()}` : 'Salary Not Disclosed'}
-              companyName={job.Company || 'Company Not Listed'}
-              icon={Facebook}
-              location={`${job.City || 'Unknown City'}, ${job.State || 'Unknown State'}, ${job.Country || 'Unknown Country'}`}
-            />
-          ))}
-          </div>
-          <div>
-            <Link href="/all-jobs">
-              <Button>More jobs</Button>
-            </Link>
+    <Container className='py-[50px]'>
+      <div className='grid md:grid-cols-12 grid-cols-1 gap-[50px]'>
+        <div className='col-span-4 w-full'>
+          <div className='p-[20px] border rounded-xl w-full'>
+            <div className='mb-[50px]'>
+              <h2 className='text-lg font-bold mb-3'>Search Jobs</h2>
+              <div className='flex items-center w-full border-grey shadow-md border-[1px] px-[12px] py-[12px] rounded-[12px] bg-white'>
+                <Search className='w-4 h-4' />
+                <Input
+                  type='text'
+                  placeholder='Job title, keyword'
+                  className='border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+                // value={'searchTerm'}
+                // onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className='flex gap-4 flex-col'>
+              <h4 className='font-bold text-sm'>Job Type</h4>
+              <div className='flex flex-wrap gap-4'>
+                {uniqueJobs.slice(0, 10).map((cat, index) => (
+                  <Button key={index} className='bg-gray-200 hover:bg-darkGrey text-black hover:text-white'>{cat.Type}</Button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </Container>
-    </section>
-  );
-};
+        <div className='col-span-8 flex flex-col gap-[50px]'>
+          <div>
+            <h2 className='text-3xl font-bold mb-2'>Recent Jobs</h2>
+            <p className='text-grey'>{jobs.length} recent jobs are posted</p>
+          </div>
+          {jobs.slice(displayIndex, displayIndex + 10).map((job, index) => (
+            <Link href={`/job/${job.id}`}>
+              <div key={index} className='border p-[35px] rounded-xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
+                <div>
+                  <h2 className='text-xl font-bold mb-2'>{job.Job}</h2>
+                  <p className='text-grey'>{job.Company || 'Company Not Listed'}</p>
+                </div>
+                <div>
+                  <p className='text-grey text-sm mb-4'>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum debitis ut pariatur a repellat blanditiis quae odio sunt commodi, quam ab deleniti hic nemo aliquam voluptatem et dolores consequuntur maxime minus incidunt id. Aliquam, nulla.
+                  </p>
+                  <Button disabled className='bg-gray-200 text-black'>{job.Type || "Not Disclosed"}</Button>
+                </div>
+                <div className='w-full h-[1px] bg-gray-200' />
+                <div className='grid sm:grid-cols-3 grid-cols-1 '>
+                  <div className='sm:hidden flex mb-4 justify-between'>
+                    <p className='font-bold flex items-center text-sm'>{job.Salary ? `${job.Salary.toLocaleString()}` : 'Salary Not Disclosed'}</p>
+                    <div className='flex items-center gap-2'>
+                      <Clock className='w-4 h-4' />
+                      <p className='text-sm text-grey'>{job.postingDate ? `${job.postingDate.toLocaleString()}` : 'N/A'}</p>
+                    </div>
+                  </div>
 
-export default FeaturedJobs;
+                  <p className='font-bold sm:flex hidden items-center text-sm'>{job.Salary ? `${job.Salary.toLocaleString()}` : 'Salary Not Disclosed'}</p>
+                  <div className='sm:flex hidden items-center gap-2'>
+                    <Clock className='w-4 h-4' />
+                    <p className='text-sm text-grey'>{job.postingDate ? `${job.postingDate.toLocaleString()}` : 'N/A'}</p>
+                  </div>
+                  <Button className='font-mono'>
+                    <Link target='_blank' href={job.jobLink ? new URL(job.jobLink).toString() : ''}>
+                      Quick Apply
+                    </Link>
+                  </Button>
+                </div>
+
+              </div>
+            </Link>
+          ))}
+          <div className='flex justify-between items-center'>
+            {displayIndex > 0 && (
+              <Button variant={'outline'} onClick={goBack}>Back</Button>
+            )}
+            <div>Showing {displayIndex + 1} to {endIndex} of {jobs.length} jobs</div>
+            {displayIndex + 10 < jobs.length && (
+              <Button onClick={loadMoreJobs}>Next</Button>
+            )}
+          </div>
+        </div>
+      </div>
+    </Container>
+  )
+}
+
+export default FeaturedJobs

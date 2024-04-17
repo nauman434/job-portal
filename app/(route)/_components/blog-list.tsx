@@ -8,17 +8,18 @@ import Link from 'next/link';
 import React from 'react'
 
 const query = groq`*[_type == 'post']{
-    ...,
-    author->,
-    categories[]->
-} | order(_createdAt asc)`
+  ...,
+  author->,
+  categories[]->
+} | order(_createdAt asc)[0...3]`
 
 export const revalidate = 0;
+
 
 const FeaturedBlogs = async () => {
   const posts = await client.fetch(query);
 
-  console.log(posts)
+  // console.log(posts)
 
   return (
     <Container className="pt-[100px]">

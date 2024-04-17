@@ -14,7 +14,7 @@ const BlogCard = ({ posts }: Props) => {
     return (
         <div className="pt-[50px]">
             <div>
-                <div className="my-10 grid md:grid-cols-12 grid-cols-1">
+                <div className="my-10 grid md:grid-cols-12 grid-cols-1 gap-[30px]">
                     {posts.map((post) => (
                         <div key={post?._id} className="col-span-4">
                             <Link href={{

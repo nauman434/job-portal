@@ -11,9 +11,9 @@ const Home = () => {
   return (
     <main className=''>
       <Hero />
+      <Newsletter />
       <FeaturedJobs />
       <PopularCategories />
-      <Newsletter />
       <BlogList/>
     </main>
   )

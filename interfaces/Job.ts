@@ -8,6 +8,7 @@ export interface Job {
     State?: string;
     City?: string;
     Status?: string;
+    Type?: string;
     Salary?: number;
     postingDate?: string;
     jobLink?: string;
