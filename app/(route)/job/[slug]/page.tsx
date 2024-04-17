@@ -8,6 +8,7 @@ import Container from '@/components/container';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, DollarSign, Navigation } from 'lucide-react';
 import Link from 'next/link';
+import Loading from '../../loading';
 
 // Define your component
 const JobDetail = () => {
@@ -38,12 +39,9 @@ const JobDetail = () => {
   // Call fetchJob function when component mounts
   useEffect(() => {
     fetchJob();
-  }, []); // Empty dependency array to ensure it runs only once
-
-  // Render your component
+  }, []); 
   return (
     <div className='pt-[100px]'>
-      {/* Conditional rendering based on whether job data is fetched */}
       {job ? (
         <section>
           <div className='bg-gray-100 py-[30px]'>
@@ -67,7 +65,7 @@ const JobDetail = () => {
                     <Button variant={'outline'} className='rounded-full'>{job.State}</Button>
                   </div>
                 </div>
-                <div className='col-span-5 items-start flex flex-col gap-10'>
+                <div className='col-span-5 items-start md:hidden flex flex-col gap-10'>
                   <div>
                     <Button >
                       <Link href={job.jobLink ? new URL(job.jobLink).toString() : ''} target='_blank' className='flex item-center gap-2'>
@@ -121,7 +119,7 @@ const JobDetail = () => {
           </Container>
         </section>
       ) : (
-        <p>Loading...</p>
+       <Loading/>
       )}
     </div>
   );
