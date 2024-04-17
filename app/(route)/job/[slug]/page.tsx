@@ -56,7 +56,7 @@ const JobDetail = () => {
             </Container>
           </div>
           <Container className='pt-[50px]'>
-            <div className='grid grid-cols-12 gap-6'>
+            <div className='grid md:grid-cols-12 grid-cols-1 gap-6'>
               <div className='col-span-7'>
                 <div className='mb-[50px]'>
                   <Button className='mb-4' disabled variant={"secondary"}>{job.Company}</Button>
@@ -67,11 +67,34 @@ const JobDetail = () => {
                     <Button variant={'outline'} className='rounded-full'>{job.State}</Button>
                   </div>
                 </div>
+                <div className='col-span-5 items-start flex flex-col gap-10'>
+                  <div>
+                    <Button >
+                      <Link href={job.jobLink ? new URL(job.jobLink).toString() : ''} target='_blank' className='flex item-center gap-2'>
+                        Apply Now
+                        <ArrowRight className='w-3 h-3' />
+                      </Link>
+                    </Button>
+                  </div>
+                  <div className='flex mb-[50px] border-grey border-[1px] rounded-[10px] sm:h-[160px] h-full w-full justify-between p-[32px] sm:items-end items-center sm:flex-row flex-col gap-4'>
+                    <div className='flex flex-col items-center gap-2 w-[50%]'>
+                      <DollarSign className='w-8 h-8 text-blue-500' />
+                      <h6 className='font-bold '>Salary(USD)</h6>
+                      <h4 className='md:text-lg text-sm text-[#0BA02C] font-medium'>{job.Salary}</h4>
+                    </div>
+                    <div className='sm:w-[1px] w-full sm:h-full h-[1px] bg-grey' />
+                    <div className='flex flex-col items-center gap-2 w-[50%]'>
+                      <Navigation className='w-8 h-8 text-blue-500' />
+                      <h6 className='font-bold'>Location</h6>
+                      <h4 className='md:text-lg text-sm'>{job.City}, {job.Country}</h4>
+                    </div>
+                  </div>
+                </div>
                 <div>
                   <p className='leading-[150%] tracking-wide text-darkGrey text-lg'>{job.jobDescription}</p>
                 </div>
               </div>
-              <div className='col-span-5 items-end flex flex-col gap-10'>
+              <div className='col-span-5 items-end md:flex hidden flex-col gap-10'>
                 <div>
                   <Button >
                     <Link href={job.jobLink ? new URL(job.jobLink).toString() : ''} target='_blank' className='flex item-center gap-2'>
@@ -82,7 +105,7 @@ const JobDetail = () => {
                 </div>
                 <div className='flex border-grey border-[1px] rounded-[10px] h-[160px] w-full justify-between p-[32px] items-end'>
                   <div className='flex flex-col items-center gap-2'>
-                    <DollarSign className='w-8 h-8 text-blue-500'/>
+                    <DollarSign className='w-8 h-8 text-blue-500' />
                     <h6 className='font-bold'>Salary(USD)</h6>
                     <h4 className='text-lg text-[#0BA02C] font-medium'>{job.Salary}</h4>
                   </div>

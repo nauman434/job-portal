@@ -8,6 +8,7 @@ import { Job } from '@/interfaces/Job'
 import { Facebook, Search } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import Loading from '../loading'
 
 function truncateText(text: any, limit: number): string {
     // Ensure text is a string or use an empty string if not
@@ -48,7 +49,7 @@ const AllJobs = () => {
         fetchJobs();
     }, []);
 
-    if (isLoading) return <p>Loading jobs...</p>;
+    if (isLoading) return <Loading/>;
     if (error) return <p>{error}</p>;
 
 
@@ -78,9 +79,7 @@ const AllJobs = () => {
             </div>
 
             <div className='flex flex-col items-center'>
-                <div>
-                    <h2 className='text-primary text-center text-3xl font-semibold'>Featured Jobs</h2>
-                </div>
+                
                 <div className="grid md:grid-cols-3 grid-cols-2 gap-4"> {jobs.map((job) => (
                     <JobCard
                         key={job.id}

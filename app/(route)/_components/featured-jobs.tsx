@@ -1,12 +1,13 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import Container from '@/components/container';
 import JobCard from '@/components/job-card';
 import { Button } from '@/components/ui/button';
-
 import { Job } from '@/interfaces/Job';
 import { Facebook } from 'lucide-react';
 import Link from 'next/link';
+import Loading from '../loading';
 
 function truncateText(text: string, limit: number): string {
   const words = text.split(/\s+/);
@@ -16,7 +17,6 @@ function truncateText(text: string, limit: number): string {
   return text;
 }
 
-
 const FeaturedJobs = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,25 +24,38 @@ const FeaturedJobs = () => {
 
   useEffect(() => {
     const fetchJobs = async () => {
-      try {
-        const response = await fetch('/api/jobs');
-        if (!response.ok) {
-          throw new Error('Failed to fetch jobs: ' + response.statusText);
-        }
-        const data = await response.json();
-        setJobs(data);
-      } catch (error: any) {
-        console.error('Failed to fetch jobs:', error);
-        setError('Failed to load jobs. Please try again later.');
-      } finally {
+      // Check for cached data
+      const cachedJobs = localStorage.getItem('cachedJobs');
+      const cachedTime = localStorage.getItem('cachedTime');
+
+      if (cachedJobs && cachedTime && new Date().getTime() - new Date(parseInt(cachedTime)).getTime() < 3600000) {
+        // If cached data is less than one hour old, use it
+        setJobs(JSON.parse(cachedJobs));
         setIsLoading(false);
+      } else {
+        // Otherwise, fetch new data
+        try {
+          const response = await fetch('/api/jobs');
+          if (!response.ok) {
+            throw new Error('Failed to fetch jobs: ' + response.statusText);
+          }
+          const data = await response.json();
+          setJobs(data);
+          localStorage.setItem('cachedJobs', JSON.stringify(data));
+          localStorage.setItem('cachedTime', new Date().getTime().toString());
+        } catch (error) {
+          console.error('Failed to fetch jobs:', error);
+          setError('Failed to load jobs. Please try again later.');
+        } finally {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchJobs();
   }, []);
 
-  if (isLoading) return <p>Loading jobs...</p>;
+  if (isLoading) return <Loading/>;
   if (error) return <p>{error}</p>;
 
   return (
