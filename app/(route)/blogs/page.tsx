@@ -1,3 +1,4 @@
+
 import BlogCard from '@/components/blog-card';
 import Container from '@/components/container';
 import { Button } from '@/components/ui/button';
@@ -15,7 +16,7 @@ const query = groq`*[_type == 'post']{
 
 export const revalidate = 0;
 
-const FeaturedBlogs = async () => {
+const Blogs = async () => {
   const posts = await client.fetch(query);
 
   console.log(posts)
@@ -23,19 +24,15 @@ const FeaturedBlogs = async () => {
   return (
     <Container className="pt-[100px]">
       <div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-col ">
           <h1 className="text-[64px] text-start font-bold">The Blogs</h1>
-          <Button variant={'link'} className='flex gap-2'>
-            <Link href={'/blogs'} className="flex items-center gap-2">
-              View All
-              <ArrowRight className='w-4 h-4' />
-            </Link>
-          </Button>
+          <BlogCard posts={posts} />
         </div>
-        <BlogCard posts={posts} />
       </div>
     </Container>
+
   )
 }
 
-export default FeaturedBlogs
+export default Blogs
+
