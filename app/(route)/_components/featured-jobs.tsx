@@ -148,7 +148,7 @@ const FeaturedJobs = () => {
                 </div>
                 <div>
                   <p className='text-grey text-sm mb-4'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum debitis ut pariatur a repellat blanditiis quae odio sunt commodi, quam ab deleniti hic nemo aliquam voluptatem et dolores consequuntur maxime minus incidunt id. Aliquam, nulla.
+                    {job.jobDescription?.slice(0,300)}
                   </p>
                   <Button disabled className='bg-gray-200 text-black'>{job.Type || "Not Disclosed"}</Button>
                 </div>

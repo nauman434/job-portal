@@ -46,7 +46,7 @@ const Hero = () => {
     }, []);
 
     const uniqueTypes = new Set<string>();
-    const uniqueJobs = jobs.slice(150, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
+    const uniqueJobs = jobs.slice(0, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
 
     return (
         <section style={{
@@ -81,7 +81,7 @@ const Hero = () => {
                         ))}
                     </div>
                     {isLoading && <Loading />}
-                    {error && <p>{error}</p>}
+                    {/* {error && <p>{error}</p>} */}
                     
                 </div>
             </Container>
