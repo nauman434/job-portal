@@ -95,7 +95,7 @@ const FeaturedJobs = () => {
               <ScrollArea className="h-[200px] w-full ">
                 <div className=''>
                   {uniqueJobs.map((cat, index) => (
-                    <div>
+                    <div key={index}>
                       <Button className='mb-2 bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75'>{cat.Type}</Button>
                       <div className='mb-2 w-full h-[1px] bg-gray-100' />
                     </div>
