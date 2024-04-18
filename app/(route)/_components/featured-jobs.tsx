@@ -23,6 +23,11 @@ const FeaturedJobs = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [displayIndex, setDisplayIndex] = useState(0);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -45,6 +50,14 @@ const FeaturedJobs = () => {
     fetchJobs();
   }, []);
 
+  const filteredJobs = jobs.filter(job => {
+    return (!selectedType || job.Type === selectedType) &&
+      (!selectedCountry || job.Country === selectedCountry) &&
+      (!selectedCompany || job.Company === selectedCompany) &&
+      job.Role?.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+
   const loadMoreJobs = () => {
     setDisplayIndex(prevIndex => prevIndex + 10);
   };
@@ -64,6 +77,24 @@ const FeaturedJobs = () => {
   const uniqueCompanies = new Set<string>();
   const uniqueCompany = jobs.slice(0, 491).filter(cat => cat.Company && !uniqueCompanies.has(cat.Company) && cat.Company.trim() !== "" && uniqueCompanies.add(cat.Company));
 
+  const handleTypeClick = (type: string | undefined) => {
+    if (type === undefined) return; // Do nothing if type is undefined
+    setSelectedType(type === selectedType ? null : type);
+  };
+
+
+  const handleCompanyClick = (company: string | undefined) => {
+    if (company === undefined) return; // Ignore undefined values
+    setSelectedCompany(company === selectedCompany ? null : company);
+  };
+
+  const handleCountryClick = (country: string | undefined) => {
+    if (country === undefined) return; // Ignore undefined values
+    setSelectedCountry(country === selectedCountry ? null : country);
+  };
+
+
+
 
   if (isLoading) return <Loading />;
   if (error) return <p>{error}</p>;
@@ -82,8 +113,8 @@ const FeaturedJobs = () => {
                   type='text'
                   placeholder='Job title, keyword'
                   className='border-none focus-visible:ring-0 focus-visible:ring-offset-0'
-                // value={'searchTerm'}
-                // onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+                  value={searchTerm}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
@@ -94,13 +125,13 @@ const FeaturedJobs = () => {
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
                 <div className=''>
-                  {uniqueJobs.map((cat, index) => (
-                    <div key={index}>
-                      <Button className='mb-2 bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75'>{cat.Type}</Button>
-                      <div className='mb-2 w-full h-[1px] bg-gray-100' />
-                    </div>
-                    // <Button key={index} className='bg-gray-200 hover:bg-darkGrey text-black hover:text-white'>{cat.Type}</Button>
+                  {uniqueJobs.filter(cat => cat.Type !== undefined).map((cat, index) => (
+                    <Button key={index} onClick={() => handleTypeClick(cat.Type)}
+                      className={`mb-2 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 ${selectedType === cat.Type ? 'font-bold' : ''}`}>
+                      {cat.Type}
+                    </Button>
                   ))}
+
                 </div>
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
@@ -111,8 +142,8 @@ const FeaturedJobs = () => {
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
                 <div className='flex flex-wrap items-start gap-4'>
-                  {uniqueCountry.slice(0, 10).map((cat, index) => (
-                    <Button key={index} variant={'outline'}>{cat.Country}</Button>
+                  {uniqueCountry.filter(cat => cat.Country !== undefined).map((cat, index) => (
+                    <Button key={index} variant={'outline'} onClick={() => handleCountryClick(cat.Country)} className={`${selectedCountry === cat.Country ? 'bg-gray-200' : ''}`}>{cat.Country}</Button>
                   ))}
                 </div>
                 <ScrollBar orientation="vertical" />
@@ -124,8 +155,8 @@ const FeaturedJobs = () => {
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
                 <div className='flex flex-wrap items-start gap-4'>
-                  {uniqueCompany.slice(0, 10).map((cat, index) => (
-                    <Button key={index} className='bg-transparent text-black hover:bg-gray-200' size={'sm'} variant={'default'}>{cat.Company}</Button>
+                  {uniqueCompany.filter(cat => cat.Company !== undefined).map((cat, index) => (
+                    <Button key={index} className={`bg-transparent text-black hover:bg-gray-200 ${selectedCompany === cat.Company ? 'font-bold' : ''}`} size={'sm'} variant={'default'} onClick={() => handleCompanyClick(cat.Company)}>{cat.Company}</Button>
                   ))}
                 </div>
                 <ScrollBar orientation="vertical" />
@@ -137,18 +168,22 @@ const FeaturedJobs = () => {
         <div className='col-span-8 flex flex-col gap-[50px]'>
           <div>
             <h2 className='text-3xl font-bold mb-2'>Recent Jobs</h2>
-            <p className='text-grey'>{jobs.length} recent jobs are posted</p>
+            <p className='text-grey'>{filteredJobs.length} recent jobs are posted</p>
           </div>
-          {jobs.slice(displayIndex, displayIndex + 10).map((job, index) => (
+          {filteredJobs.slice(displayIndex, displayIndex + 10).map((job, index) => (
             <Link key={index} href={`/job/${job.id}`}>
               <div key={index} className='border p-[35px] rounded-xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
                 <div>
                   <h2 className='text-xl font-bold mb-2'>{job.Role}</h2>
-                  <p className='text-grey'>{job.Company || 'Company Not Listed'}</p>
+                  <div className='flex items-center gap-4'>
+                    <p className='text-grey '>{job.Company || 'Company Not Listed'}</p>
+                    <p className='font-bold'>{job.City}, {job.State}, {job.Country}</p>
+                  </div>
+
                 </div>
                 <div>
                   <p className='text-grey text-sm mb-4'>
-                    {job.jobDescription?.slice(0,300)}
+                    {job.jobDescription?.slice(0, 300)}
                   </p>
                   <Button disabled className='bg-gray-200 text-black'>{job.Type || "Not Disclosed"}</Button>
                 </div>
@@ -181,11 +216,12 @@ const FeaturedJobs = () => {
             {displayIndex > 0 && (
               <Button variant={'outline'} onClick={goBack}>Back</Button>
             )}
-            <div>Showing {displayIndex + 1} to {endIndex} of {jobs.length} jobs</div>
-            {displayIndex + 10 < jobs.length && (
+            <div>Showing {displayIndex + 1} to {endIndex} of {filteredJobs.length} jobs</div>
+            {displayIndex + 10 < filteredJobs.length && (
               <Button onClick={loadMoreJobs}>Next</Button>
             )}
           </div>
+
         </div>
       </div>
     </Container>
