@@ -9,6 +9,8 @@ import { Job } from '@/interfaces/Job';
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 function truncateText(text: string, limit: number): string {
   const words = text.split(/\s+/);
@@ -104,7 +106,7 @@ const FeaturedJobs = () => {
     <Container className='py-[50px]'>
       <div className='grid md:grid-cols-12 grid-cols-1 gap-[50px]'>
         <div className='md:col-span-4 col-span-8 flex flex-col gap-[30px]'>
-          <div className='p-[20px] border rounded-xl '>
+          <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
             <div className='mb-[20px]'>
               <h2 className='text-lg font-bold mb-3'>Search Jobs</h2>
               <div className='flex items-center w-full border-grey shadow-md border-[1px] px-[12px] py-[12px] rounded-[12px] bg-white'>
@@ -120,7 +122,7 @@ const FeaturedJobs = () => {
             </div>
 
           </div>
-          <div className='p-[20px] border rounded-xl '>
+          <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
             <h4 className='font-bold text-sm mb-[20px]'>Job Type</h4>
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
@@ -137,7 +139,7 @@ const FeaturedJobs = () => {
               </ScrollArea>
             </div>
           </div>
-          <div className='p-[20px] border rounded-xl '>
+          <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
             <h4 className='font-bold text-sm mb-[20px]'>Country</h4>
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
@@ -150,7 +152,7 @@ const FeaturedJobs = () => {
               </ScrollArea>
             </div>
           </div>
-          <div className='p-[20px] border rounded-xl '>
+          <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
             <h4 className='font-bold text-sm mb-[20px]'>Companies</h4>
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
@@ -165,19 +167,23 @@ const FeaturedJobs = () => {
           </div>
         </div>
         {/* 2nd Grid-Col */}
-        <div className='col-span-8 flex flex-col gap-[50px]'>
+        <div className='md:col-span-1 col-span-8 flex items-center justify-center'>
+          <Separator orientation="vertical" className='md:flex hidden' />
+          <Separator orientation="horizontal" className='md:hidden flex ' />
+        </div>
+        <div className='md:col-span-7 col-span-8 flex flex-col gap-[50px]'>
           <div>
             <h2 className='text-3xl font-bold mb-2'>Recent Jobs</h2>
             <p className='text-grey'>{filteredJobs.length} recent jobs are posted</p>
           </div>
           {filteredJobs.slice(displayIndex, displayIndex + 10).map((job, index) => (
             <Link key={index} href={`/job/${job.id}`}>
-              <div key={index} className='border p-[35px] rounded-xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
+              <div key={index} className='border bg-white sm:p-[35px] p-[15px] rounded-xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
                 <div>
                   <h2 className='text-xl font-bold mb-2'>{job.Role}</h2>
-                  <div className='flex items-center gap-4'>
+                  <div className='flex sm:flex-row flex-col items-start gap-4'>
                     <p className='text-grey '>{job.Company || 'Company Not Listed'}</p>
-                    <p className='font-bold'>{job.City}, {job.State}, {job.Country}</p>
+                    <p className=''><span className='p-1 bg-red-100  text-red-700 mr-2 rounded-sm'>{job.City}</span> <span className='p-1 bg-green-100 border-green-700 text-green-700 mr-2 rounded-sm'>{job.State}</span>  <span className='font-bold'>{job.Country}</span></p>
                   </div>
 
                 </div>
@@ -191,10 +197,26 @@ const FeaturedJobs = () => {
                 <div className='grid sm:grid-cols-3 grid-cols-1 '>
                   <div className='sm:hidden flex mb-4 justify-between flex-wrap gap-3'>
                     <p className='font-bold flex items-center text-sm'>{job.Salary ? `${job.Salary.toLocaleString()}` : 'Salary Not Disclosed'}</p>
-                    <div className='flex items-center gap-2'>
-                      <Clock className='w-4 h-4' />
-                      <p className='text-sm text-grey'>{job.postingDate ? `${job.postingDate.toLocaleString()}` : 'N/A'}</p>
-                    </div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Button variant={'outline'} className=''>
+                            <div className='flex items-center gap-2'>
+                              <Clock className='w-4 h-4' />
+                              <p className='text-sm text-grey'>{job.postingDate ? `${job.postingDate.toLocaleString()}` : 'N/A'}</p>
+                            </div>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Posted Time</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+
+
+
+
                   </div>
 
                   <p className='font-bold sm:flex hidden items-center text-sm'>{job.Salary ? `${job.Salary.toLocaleString()}` : 'Salary Not Disclosed'}</p>
@@ -204,7 +226,7 @@ const FeaturedJobs = () => {
                   </div>
                   <Button className=''>
                     <Link target='_blank' href={job.jobLink ? new URL(job.jobLink).toString() : ''}>
-                      Quick Apply
+                      Apply Now
                     </Link>
                   </Button>
                 </div>

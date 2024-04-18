@@ -49,32 +49,17 @@ const Hero = () => {
     const uniqueJobs = jobs.slice(0, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
 
     return (
-        <section style={{
-            backgroundImage: `url('/lines.svg'), linear-gradient(#F8F9FD, #F8F9FD)`,
-            backgroundBlendMode: 'over',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'bottom',
-            backgroundSize: 'cover'
-        }}>
+        <section >
             <Container className=''>
                 <div className='flex flex-col justify-center items-center pt-[100px] pb-[30px]  gap-[50px]'>
                     <div className='md:w-[60%] w-full flex flex-col gap-[20px]'>
                         <h1 className='sm:text-5xl text-xl  font-semibold text-center '>Welcome to largest Mining jobs site in the world.</h1>
                         <p className='sm:text-lg text-sm text-center text-grey'>Discover top sports betting jobs across sportsbooks, startups, analytics, media, fintech and SaaS companies supporting the sports betting industry.</p>
                     </div>
-                    {/* <div className='flex flex-col gap-[24px]'>
-                        <div className='flex w-full justify-between border-grey shadow-md border-[1px] px-[12px] py-[12px] rounded-[12px] bg-white'>
-                            <div className='flex items-center'>
-                                <Search className='w-4 h-4' />
-                                <Input type='text' placeholder='Job title, keyword' className='border-none focus-visible:ring-0 focus-visible:ring-offset-0' />
-                            </div>
-                            <Button>Search</Button>
-                        </div>
-                    </div> */}
                     <div className='flex gap-3 flex-wrap items-center justify-center'>
                         {uniqueJobs.slice(0, 10).map((cat, index) => (
                             <Button key={index} size={'sm'} variant="outline" className='bg-transparent text-xs h-[28px]  rounded-full'>
-                                <Link href={`/all-jobs/role/${cat.Role}`}>
+                                <Link href={`/`}>
                                     {cat.Type}
                                 </Link>
                             </Button>
