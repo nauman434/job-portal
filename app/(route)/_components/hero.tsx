@@ -57,10 +57,10 @@ const Hero = () => {
             backgroundSize: 'cover'
         }}>
             <Container className=''>
-                <div className='flex flex-col justify-center items-center py-[100px]  gap-[50px]'>
+                <div className='flex flex-col justify-center items-center pt-[100px] pb-[30px]  gap-[50px]'>
                     <div className='md:w-[60%] w-full flex flex-col gap-[20px]'>
-                        <h1 className='text-5xl  font-semibold text-center leading-[150%]'>Welcome to largest Mining jobs site in the world.</h1>
-                        <p className='text-lg text-center text-grey'>Discover top sports betting jobs across sportsbooks, startups, analytics, media, fintech and SaaS companies supporting the sports betting industry.</p>
+                        <h1 className='sm:text-5xl text-xl  font-semibold text-center '>Welcome to largest Mining jobs site in the world.</h1>
+                        <p className='sm:text-lg text-sm text-center text-grey'>Discover top sports betting jobs across sportsbooks, startups, analytics, media, fintech and SaaS companies supporting the sports betting industry.</p>
                     </div>
                     {/* <div className='flex flex-col gap-[24px]'>
                         <div className='flex w-full justify-between border-grey shadow-md border-[1px] px-[12px] py-[12px] rounded-[12px] bg-white'>
@@ -73,7 +73,7 @@ const Hero = () => {
                     </div> */}
                     <div className='flex gap-3 flex-wrap items-center justify-center'>
                         {uniqueJobs.slice(0, 10).map((cat, index) => (
-                            <Button key={index} size={'sm'} variant="outline" className='bg-transparent font-mono text-xs h-[28px]  rounded-full'>
+                            <Button key={index} size={'sm'} variant="outline" className='bg-transparent text-xs h-[28px]  rounded-full'>
                                 <Link href={`/all-jobs/role/${cat.Role}`}>
                                     {cat.Type}
                                 </Link>
@@ -82,32 +82,7 @@ const Hero = () => {
                     </div>
                     {isLoading && <Loading />}
                     {error && <p>{error}</p>}
-                    <div className='flex sm:flex-row flex-col gap-[30px] w-full'>
-                        <div className='sm:w-[50%] w-full flex items-center justify-center flex-col gap-4 border p-[35px] bg-white hover:shadow-lg transition ease-linear duration-75 rounded-lg'>
-                            <div>
-                                <BriefcaseBusiness className='w-16 h-16 text-darkGrey'  />
-                            </div>
-                            <div>
-                                <h4 className='text-center text-lg font-bold text-primary'>Employers</h4>
-                                <p className='text-center text-sm text-darkGrey'>Post open jobs and hire top talent.</p>
-                            </div>
-                            <div>
-                                <Button>Post a Job</Button>
-                            </div>
-                        </div>
-                        <div className='sm:w-[50%] w-full flex items-center justify-center flex-col gap-4 border p-[35px] bg-white hover:shadow-lg transition ease-linear duration-75 rounded-lg'>
-                            <div>
-                                <User className='w-16 h-16 text-darkGrey'  />
-                            </div>
-                            <div>
-                                <h4 className='text-center text-lg font-bold text-primary'>Job seekers</h4>
-                                <p className='text-center text-sm text-darkGrey'>Create a profile and get hired by top employers.</p>
-                            </div>
-                            <div>
-                                <Button>Send your Resume</Button>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </Container>
         </section>

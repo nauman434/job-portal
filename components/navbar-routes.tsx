@@ -5,20 +5,16 @@ import { usePathname } from "next/navigation"
 
 const navRoutes = [
     {
-        name: "Overview",
-        path: '/'
-    },
-    {
         name: "Jobs",
         path: '/'
     },
     {
         name: "Companies",
-        path: '/'
+        path: '/companies'
     },
     {
-        name: "Remote",
-        path: '/'
+        name: "Career Advice",
+        path: '/blogs'
     },
 
 ]

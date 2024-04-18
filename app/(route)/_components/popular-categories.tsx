@@ -62,7 +62,7 @@ const PopularCategories = () => {
                             <ArrowRight className='w-4 h-4' />
                         </Button>
                     </div>
-                    <div className='grid md:grid-cols-4 grid-cols-2 gap-8'>
+                    <div className='grid md:grid-cols-4 grid-cols-1 sm:grid-cols-2 gap-8'>
                         {categories.map((category, index) => (
                             <Link href={'/'} key={index}>
                                 <div className='flex gap-4 items-center p-[24px] group hover:bg-none cursor-pointer  transition-colors duration-200 hover:shadow-lg rounded-[12px]'>

@@ -17,11 +17,9 @@ const Navbar = () => {
                     </div>
                     <div className='md:flex hidden items-center justify-center'><NavbarRoutes /></div>
                     <div className='flex items-center justify-end gap-4'>
-                        <Button variant={'ghost'}>
-                            Login
-                        </Button>
+                        
                         <Button variant={'default'}>
-                            Sign up
+                            Post a Job
                         </Button>
                     </div>
                 </div>

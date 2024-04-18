@@ -9,10 +9,10 @@ const Newsletter: React.FC = () => {
 
     return (
         <Container className='mt-[50px]'>
-            <section className='rounded-lg bg-black' >
+            <section className='rounded-lg bg-black p-[20px]' >
                 <div className='flex py-[50px] flex-col justify-center items-center  gap-[20px] '>
-                    <div className='w-[540px] flex flex-col gap-[20px]'>
-                        <h1 className='text-3xl font-semibold text-center text-white leading-[100%]'>Get the latest jobs in your inbox</h1>
+                    <div className='sm:w-[540px] w-full flex flex-col gap-[20px]'>
+                        <h1 className='sm:text-3xl text-xl font-semibold text-center text-white leading-[100%]'>Get the latest jobs in your inbox</h1>
                         <p className='text-sm text-center text-grey'>Subscribe to our newsletter and get latest jobs in you email</p>
                     </div>
                     <div className='flex '>
