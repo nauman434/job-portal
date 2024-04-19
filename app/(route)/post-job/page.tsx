@@ -42,8 +42,8 @@ const page = () => {
                         </div>
                         <Separator />
                         <div className='flex flex-col gap-4 mb-10'>
-                            {plan.map((item) => (
-                                <div className='flex items-center gap-3'>
+                            {plan.map((item, index) => (
+                                <div key={index} className='flex items-center gap-3'>
                                     <Check className='w-4 h-4' />
                                     <p className='text-darkGrey'>{item.text}</p>
                                 </div>
