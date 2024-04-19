@@ -34,6 +34,8 @@ const FeaturedJobs = () => {
 
 
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [jobTerm, setJobTerm] = useState<string>('');
+  const [companyTerm, setCompanyTerm] = useState<string>('');
   const [countryTerm, setCountryTerm] = useState<string>('');
 
 
@@ -208,17 +210,28 @@ const FeaturedJobs = () => {
               </div>
             </div>
 
+            <div className='flex items-center w-full px-[12px] py-[6px] rounded-[12px] bg-lightGrey mb-[20px]'>
+              <Search className='w-4 h-4' />
+              <Input
+                type='text'
+                placeholder='e.g. "Maintenance"'
+                className='border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent'
+                value={jobTerm}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setJobTerm(e.target.value)}
+              />
+            </div>
+
             <div className='flex flex-wrap gap-4'>
-              <ScrollArea className="h-[200px] w-full ">
+              <ScrollArea className="h-[150px] w-full ">
                 <div className=''>
 
 
                   {uniqueJobs
-                    .filter(cat => cat.Type !== undefined)
+                    .filter(cat => cat.Type !== undefined && cat.Type.toLowerCase().includes(jobTerm.toLowerCase()))
                     .map((cat, index) => (
                       <div
                         key={index}
-                        className={`mb-2 py-4 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 
+                        className={`py-4 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 
       `}>
                         <div className="flex items-center space-x-2">
                           <Checkbox id={cat.Type} onClick={() => handleTypeClick(cat.Type)} />
@@ -265,22 +278,28 @@ const FeaturedJobs = () => {
               </div>
             </div>
             <div className='flex flex-wrap gap-4'>
-              <ScrollArea className="h-[200px] w-full ">
+              <ScrollArea className="h-[150px] w-full ">
                 <div className='flex flex-col items-start gap-4'>
 
 
                   {uniqueCountry
                     .filter(cat => cat.Country !== undefined && cat.Country.toLowerCase().includes(countryTerm.toLowerCase()))
                     .map((cat, index) => (
-                      <Button
+                      <div
                         key={index}
-                        variant={'outline'}
-                        onClick={() => cat.Country && handleCountryClick(cat.Country)} // Safeguard against undefined
-                        className={`border-none hover:bg-transparent 
-        ${selectedCountry && cat.Country && selectedCountry.includes(cat.Country) ? 'bg-transparent font-bold' : ''}`}
-                      >
-                        {cat.Country}
-                      </Button>
+                        className={`py-2 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 
+      `}>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id={cat.Type} onClick={() => handleTypeClick(cat.Type)} />
+                          <label
+                            htmlFor={cat.Type}
+                            className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer 
+                            ${selectedCountry && cat.Country && selectedCountry.includes(cat.Country) ? 'font-bold' : ''}`}
+                          >
+                            {cat.Country}
+                          </label>
+                        </div>
+                      </div>
                     ))
                   }
 
@@ -295,31 +314,49 @@ const FeaturedJobs = () => {
 
 
           <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
-          <div className='flex justify-between items-center mb-[20px]'>
-          <h4 className='font-bold text-sm '><span className='font-normal'>Filter by </span>Companies</h4>
-                <div>
-                  <Button variant={'link'} className='text-blue-500' onClick={clearSelectedCompanies}>Clear</Button>
-                </div>
+            <div className='flex justify-between items-center mb-[20px]'>
+              <h4 className='font-bold text-sm '><span className='font-normal'>Filter by </span>Companies</h4>
+              <div>
+                <Button variant={'link'} className='text-blue-500' onClick={clearSelectedCompanies}>Clear</Button>
               </div>
-            
+            </div>
+
+            <div className='flex items-center w-full px-[12px] py-[6px] rounded-[12px] bg-lightGrey mb-[20px]'>
+              <Search className='w-4 h-4' />
+              <Input
+                type='text'
+                placeholder='Job title, keyword'
+                className='border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent'
+                value={companyTerm}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCompanyTerm(e.target.value)}
+              />
+            </div>
+
             <div className='flex flex-wrap gap-4'>
-              <ScrollArea className="h-[200px] w-full ">
+              <ScrollArea className="h-[150px] w-full ">
                 <div className='flex flex-col items-start gap-4'>
 
 
                   {uniqueCompany
-                    .filter(cat => cat.Company !== undefined) // Ensure Company is not undefined
+                    .filter(cat => cat.Company !== undefined && cat.Company.toLowerCase().includes(companyTerm.toLowerCase()))
                     .map((cat, index) => (
-                      <Button
+                      <div
                         key={index}
-                        className={`bg-transparent text-black hover:bg-gray-200 
-        ${selectedCompany && cat.Company && selectedCompany.includes(cat.Company) ? 'font-bold' : ''}`} // Check for inclusion if selectedCompany is an array
-                        size={'sm'}
-                        variant={'default'}
-                        onClick={() => cat.Company && handleCompanyClick(cat.Company)} // Safeguard against undefined
-                      >
-                        {cat.Company}
-                      </Button>
+                        className={` py-2 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 
+      `}>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id={cat.Type} onClick={() => handleTypeClick(cat.Type)} />
+                          <label
+                            htmlFor={cat.Type}
+                            className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer 
+                            ${selectedCompany && cat.Company && selectedCompany.includes(cat.Company) ? 'font-bold' : ''}`}
+                          >
+                            {cat.Company}
+                          </label>
+                        </div>
+                      </div>
+
+
                     ))
                   }
 

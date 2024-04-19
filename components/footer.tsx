@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { NavbarRoutes } from './navbar-routes'
 import { Button } from './ui/button'
-import { Facebook, LinkedinIcon, Twitter } from 'lucide-react'
+import { Facebook, Instagram, LinkedinIcon, Twitter } from 'lucide-react'
 
 const footerRoutes = [
   {
@@ -42,6 +42,14 @@ const socialMedia = [
     icon: Facebook,
     path: '/'
   },
+  {
+    icon: Instagram,
+    path: '/'
+  },
+  {
+    icon: Twitter,
+    path: '/'
+  },
 ]
 
 const Footer = () => {
@@ -51,7 +59,7 @@ const Footer = () => {
         <div className='flex sm:flex-row flex-col gap-[30px] items-start justify-between'>
           <div>
             <Link href={'/'}>
-              <Image src={'/Logo.svg'} width={100} height={100} alt='Logo' />
+              <Image src={'/miners.svg'} width={150} height={150} alt='Logo' />
             </Link>
           </div>
           <div className='flex sm:flex-row flex-col  gap-4'>
@@ -76,7 +84,7 @@ const Footer = () => {
         </div>
         <div className='py-[30px] border-t-grey border-t-[1px]'>
           <p className='text-center text-[15px] text-darkGrey'>
-            © 2023 Job Portal. All Rights Reserved.
+            © 2024 miners jobs. All Rights Reserved.
           </p>
         </div>
       </Container>

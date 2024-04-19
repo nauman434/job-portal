@@ -13,7 +13,7 @@ const Home = () => {
       <Hero />
       <Newsletter />
       <FeaturedJobs />
-      <PopularCategories />
+      {/* <PopularCategories /> */}
       <BlogList/>
     </main>
   )

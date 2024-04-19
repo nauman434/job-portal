@@ -80,7 +80,7 @@ const JobDetail = () => {
                 </div>
                 <div>
                   <h4 className='text-lg font-bold mb-2'>Location</h4>
-                  <p className=''><span className='p-1 bg-red-100  text-red-700 mr-2 rounded-sm'>{job.City}</span> <span className='p-1 bg-green-100 border-green-700 text-green-700 mr-2 rounded-sm'>{job.State}</span>  <span className='font-bold'>{job.Country}</span></p>
+                  <p className=''><span className='p-1 bg-gray-100 border-gray-200 text-gray-700 mr-2 rounded-sm'>{job.City}</span> <span className='p-1 bg-gray-100 border-gray-200 text-gray-700 mr-2 rounded-sm'>{job.State}</span>  <span className='font-bold'>{job.Country}</span></p>
                 </div>
               </div>
 

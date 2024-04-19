@@ -51,10 +51,10 @@ const Hero = () => {
     return (
         <section className='pt-[100px]' >
             <Container className=''>
-                <div className='flex flex-col justify-center items-center pt-[100px] pb-[30px]  gap-[50px]'>
+                <div className='flex flex-col justify-center items-center pt-[50px] pb-[30px]  gap-[50px]'>
                     <div className='md:w-[60%] w-full flex flex-col gap-[20px]'>
                         <h1 className='sm:text-[48px] text-xl leading-[150%]  font-bold text-center mb-4'>Welcome to largest Mining jobs site in the world.</h1>
-                        <p className='sm:text-lg text-sm text-center text-grey'>Discover top sports betting jobs across sportsbooks, startups, analytics, media, fintech and SaaS companies supporting the sports betting industry.</p>
+                        <p className='sm:text-lg text-sm text-center text-grey'>Discover a Wealth of Career Opportunities in the Thriving World of Mining: Explore High-Paying Roles, International Ventures, and Exciting Projects Await</p>
                     </div>
                     {/* <div className='flex gap-3 flex-wrap items-center justify-center'>
                         {uniqueJobs.slice(0, 10).map((cat, index) => (
