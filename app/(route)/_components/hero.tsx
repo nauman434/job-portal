@@ -49,14 +49,14 @@ const Hero = () => {
     const uniqueJobs = jobs.slice(0, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
 
     return (
-        <section >
+        <section className='pt-[100px]' >
             <Container className=''>
                 <div className='flex flex-col justify-center items-center pt-[100px] pb-[30px]  gap-[50px]'>
                     <div className='md:w-[60%] w-full flex flex-col gap-[20px]'>
-                        <h1 className='sm:text-5xl text-xl  font-semibold text-center '>Welcome to largest Mining jobs site in the world.</h1>
+                        <h1 className='sm:text-[48px] text-xl leading-[150%]  font-bold text-center mb-4'>Welcome to largest Mining jobs site in the world.</h1>
                         <p className='sm:text-lg text-sm text-center text-grey'>Discover top sports betting jobs across sportsbooks, startups, analytics, media, fintech and SaaS companies supporting the sports betting industry.</p>
                     </div>
-                    <div className='flex gap-3 flex-wrap items-center justify-center'>
+                    {/* <div className='flex gap-3 flex-wrap items-center justify-center'>
                         {uniqueJobs.slice(0, 10).map((cat, index) => (
                             <Button key={index} size={'sm'} variant="outline" className='bg-transparent text-xs h-[28px]  rounded-full'>
                                 <Link href={`/`}>
@@ -64,7 +64,7 @@ const Hero = () => {
                                 </Link>
                             </Button>
                         ))}
-                    </div>
+                    </div> */}
                     {isLoading && <Loading />}
                     {/* {error && <p>{error}</p>} */}
                     

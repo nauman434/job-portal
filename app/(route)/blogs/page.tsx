@@ -25,7 +25,7 @@ const Blogs = async () => {
     <Container className="pt-[100px]">
       <div>
         <div className="flex items-center flex-col ">
-          <h1 className="text-[64px] text-start font-bold">The Blogs</h1>
+          <h1 className="text-[64px] text-start font-bold">Career Advice</h1>
           <BlogCard posts={posts} />
         </div>
       </div>

@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Checkbox } from '@/components/ui/checkbox'
 
 function truncateText(text: string, limit: number): string {
   const words = text.split(/\s+/);
@@ -26,6 +27,7 @@ const FeaturedJobs = () => {
   const [error, setError] = useState<string | null>(null);
   const [displayIndex, setDisplayIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [countryTerm, setCountryTerm] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
@@ -123,14 +125,23 @@ const FeaturedJobs = () => {
 
           </div>
           <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
-            <h4 className='font-bold text-sm mb-[20px]'>Job Type</h4>
+            <h4 className='font-bold text-sm mb-[20px]'><span className='font-normal'>Filter by </span>Job Type</h4>
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
                 <div className=''>
                   {uniqueJobs.filter(cat => cat.Type !== undefined).map((cat, index) => (
                     <Button key={index} onClick={() => handleTypeClick(cat.Type)}
                       className={`mb-2 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 ${selectedType === cat.Type ? 'font-bold' : ''}`}>
-                      {cat.Type}
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id={`checkbox-${index}`} />
+                        <label
+                          htmlFor={`checkbox-${index}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          {cat.Type}
+                        </label>
+                      </div>
+
                     </Button>
                   ))}
 
@@ -140,23 +151,36 @@ const FeaturedJobs = () => {
             </div>
           </div>
           <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
-            <h4 className='font-bold text-sm mb-[20px]'>Country</h4>
+            <div className='mb-4'>
+              <h4 className='font-bold text-sm mb-[20px]'><span className='font-normal'>Filter by </span>Location</h4>
+              <div className='flex items-center w-full px-[12px] py-[6px] rounded-[12px] bg-lightGrey'>
+                <Search className='w-4 h-4' />
+                <Input
+                  type='text'
+                  placeholder='Job title, keyword'
+                  className='border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent'
+                  value={countryTerm}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCountryTerm(e.target.value)}
+                />
+              </div>
+            </div>
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
-                <div className='flex flex-wrap items-start gap-4'>
-                  {uniqueCountry.filter(cat => cat.Country !== undefined).map((cat, index) => (
-                    <Button key={index} variant={'outline'} onClick={() => handleCountryClick(cat.Country)} className={`${selectedCountry === cat.Country ? 'bg-gray-200' : ''}`}>{cat.Country}</Button>
-                  ))}
+                <div className='flex flex-col items-start gap-4'>
+                  {uniqueCountry.filter(cat => cat.Country && cat.Country.toLowerCase().includes(countryTerm.toLowerCase()))
+                    .map((cat, index) => (
+                      <Button key={index} variant={'outline'} onClick={() => handleCountryClick(cat.Country)} className={`border-none hover:bg-transparent ${selectedCountry === cat.Country ? 'bg-transparent' : ''}`}>{cat.Country}</Button>
+                    ))}
                 </div>
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
             </div>
           </div>
           <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
-            <h4 className='font-bold text-sm mb-[20px]'>Companies</h4>
+          <h4 className='font-bold text-sm mb-[20px]'><span className='font-normal'>Filter by </span>Companies</h4>
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
-                <div className='flex flex-wrap items-start gap-4'>
+                <div className='flex flex-col items-start gap-4'>
                   {uniqueCompany.filter(cat => cat.Company !== undefined).map((cat, index) => (
                     <Button key={index} className={`bg-transparent text-black hover:bg-gray-200 ${selectedCompany === cat.Company ? 'font-bold' : ''}`} size={'sm'} variant={'default'} onClick={() => handleCompanyClick(cat.Company)}>{cat.Company}</Button>
                   ))}
@@ -171,25 +195,25 @@ const FeaturedJobs = () => {
           <Separator orientation="vertical" className='md:flex hidden' />
           <Separator orientation="horizontal" className='md:hidden flex ' />
         </div>
-        <div className='md:col-span-7 col-span-8 flex flex-col gap-[50px]'>
+        <div className='md:col-span-7 col-span-8 flex flex-col gap-[30px]'>
           <div>
             <h2 className='text-3xl font-bold mb-2'>Recent Jobs</h2>
             <p className='text-grey'>{filteredJobs.length} recent jobs are posted</p>
           </div>
           {filteredJobs.slice(displayIndex, displayIndex + 10).map((job, index) => (
             <Link key={index} href={`/job/${job.id}`}>
-              <div key={index} className='border bg-white sm:p-[35px] p-[15px] rounded-xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
+              <div key={index} className='border bg-white sm:px-[30px] px-[15px] py-[15px] rounded-xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
                 <div>
                   <h2 className='text-xl font-bold mb-2'>{job.Role}</h2>
                   <div className='flex sm:flex-row flex-col items-start gap-4'>
                     <p className='text-grey '>{job.Company || 'Company Not Listed'}</p>
-                    <p className=''><span className='p-1 bg-red-100  text-red-700 mr-2 rounded-sm'>{job.City}</span> <span className='p-1 bg-green-100 border-green-700 text-green-700 mr-2 rounded-sm'>{job.State}</span>  <span className='font-bold'>{job.Country}</span></p>
+                    <p className=''><span className='p-1 bg-gray-100 text-black mr-2 rounded-sm'>{job.City}</span> <span className='p-1 bg-gray-100 text-black mr-2 rounded-sm'>{job.State}</span>  <span className='font-bold'>{job.Country}</span></p>
                   </div>
 
                 </div>
                 <div>
                   <p className='text-grey text-sm mb-4'>
-                    {job.jobDescription?.slice(0, 300)}
+                    {job.jobDescription?.slice(0, 100)}
                   </p>
                   <Button disabled className='bg-gray-200 text-black'>{job.Type || "Not Disclosed"}</Button>
                 </div>

@@ -19,7 +19,7 @@ const Navbar = () => {
                     <div className='flex items-center justify-end gap-4'>
                         
                         <Button variant={'default'}>
-                            Post a Job
+                            <Link href={'/post-job'}>Post a Job For Free</Link>
                         </Button>
                     </div>
                 </div>
