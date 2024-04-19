@@ -12,7 +12,7 @@ const Navbar = () => {
                 <div className='grid md:grid-cols-3 grid-cols-2'>
                     <div className='flex items-center justify-start'>
                         <Link href={'/'}>
-                            <Image src={'/Logo.svg'} width={100} height={100} alt='Logo' />
+                            <Image src={'/miners.svg'} width={150} height={150} alt='Logo' />
                         </Link>
                     </div>
                     <div className='md:flex hidden items-center justify-center'><NavbarRoutes /></div>

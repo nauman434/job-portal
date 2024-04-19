@@ -75,7 +75,7 @@ const JobDetail = () => {
                   <p className='text-lg text-darkGrey'>{job.Salary ? `${job.Salary.toLocaleString()}` : 'Not Disclosed'}</p>
                 </div>
                 <div>
-                  <h4 className='text-lg font-bold mb-2'>Posted At</h4>
+                  <h4 className='text-lg font-bold mb-2'>Posted On</h4>
                   <p className='text-lg text-darkGrey'>{job.postingDate ? `${job.postingDate.toLocaleString()}` : 'N/A'}</p>
                 </div>
                 <div>

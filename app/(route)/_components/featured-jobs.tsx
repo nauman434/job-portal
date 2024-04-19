@@ -25,12 +25,21 @@ const FeaturedJobs = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+
   const [displayIndex, setDisplayIndex] = useState(0);
+  const [checkedStates, setCheckedStates] = useState<{ [key: string]: boolean }>({});
+  // State to track multiple selected types
+  // const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+
+
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [countryTerm, setCountryTerm] = useState<string>('');
-  const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+
+
+  const [selectedType, setSelectedType] = useState<string[] | null>([]);
+  const [selectedCountry, setSelectedCountry] = useState<string[] | null>([]);
+  const [selectedCompany, setSelectedCompany] = useState<string[] | null>([]);
 
 
   useEffect(() => {
@@ -54,14 +63,105 @@ const FeaturedJobs = () => {
     fetchJobs();
   }, []);
 
+
+
   const filteredJobs = jobs.filter(job => {
-    return (!selectedType || job.Type === selectedType) &&
-      (!selectedCountry || job.Country === selectedCountry) &&
-      (!selectedCompany || job.Company === selectedCompany) &&
+    return (!selectedType || selectedType.length === 0 || (job.Type && selectedType.includes(job.Type))) &&
+      (!selectedCountry || selectedCountry.length === 0 || (job.Country && selectedCountry.includes(job.Country))) &&
+      (!selectedCompany || selectedCompany.length === 0 || (job.Company && selectedCompany.includes(job.Company))) &&
       job.Role?.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
 
+
+
+  // Unique Filter with no repeation
+  const uniqueTypes = new Set<string>();
+  const uniqueJobs = jobs.slice(150, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
+
+  const uniqueCountries = new Set<string>();
+  const uniqueCountry = jobs.slice(0, 491).filter(cat => cat.Country && !uniqueCountries.has(cat.Country) && cat.Country.trim() !== "" && uniqueCountries.add(cat.Country));
+
+  const uniqueCompanies = new Set<string>();
+  const uniqueCompany = jobs.slice(0, 491).filter(cat => cat.Company && !uniqueCompanies.has(cat.Company) && cat.Company.trim() !== "" && uniqueCompanies.add(cat.Company));
+
+
+
+  // Handle Clicks Function
+  // const handleTypeClick = (type: string | undefined) => {
+  //   if (type === undefined) return; // Do nothing if type is undefined
+  //   setSelectedType(type === selectedType ? null : type);
+  // };
+
+  // const handleCompanyClick = (company: string | undefined) => {
+  //   if (company === undefined) return; // Ignore undefined values
+  //   setSelectedCompany(company === selectedCompany ? null : company);
+  // };
+
+  // const handleCountryClick = (country: string | undefined) => {
+  //   if (country === undefined) return; // Ignore undefined values
+  //   setSelectedCountry(country === selectedCountry ? null : country);
+  // };
+
+  const handleTypeClick = (type: string | undefined) => {
+    if (type === undefined) return;  // Exit early if type is undefined
+    setSelectedType(prevTypes => {
+      const currentTypes = prevTypes || [];
+      if (currentTypes.includes(type)) {
+        return currentTypes.filter(t => t !== type);
+      } else {
+        return [...currentTypes, type];
+      }
+    });
+  };
+
+  const handleCompanyClick = (company: string | undefined) => {
+    if (company === undefined) return;  // Ignore undefined values
+    setSelectedCompany(prevCompanies => {
+      const currentCompanies = prevCompanies || [];
+      if (currentCompanies.includes(company)) {
+        return currentCompanies.filter(c => c !== company);
+      } else {
+        return [...currentCompanies, company];
+      }
+    });
+  };
+
+  const handleCountryClick = (country: string | undefined) => {
+    if (country === undefined) return;  // Ignore undefined values
+    setSelectedCountry(prevCountries => {
+      const currentCountries = prevCountries || [];
+      if (currentCountries.includes(country)) {
+        return currentCountries.filter(c => c !== country);
+      } else {
+        return [...currentCountries, country];
+      }
+    });
+  };
+
+
+
+
+
+
+
+
+  // Function to clear all selected types
+  const clearSelectedTypes = () => {
+    setSelectedType([]);  // Clear the array
+  };
+
+  const clearSelectedCountries = () => {
+    setSelectedCountry([]);  // Clear the array
+  };
+
+  const clearSelectedCompanies = () => {
+    setSelectedCompany([]);  // Clear the array
+  };
+
+
+
+  // Pagination
   const loadMoreJobs = () => {
     setDisplayIndex(prevIndex => prevIndex + 10);
   };
@@ -72,33 +172,6 @@ const FeaturedJobs = () => {
 
   const endIndex = Math.min(displayIndex + 10, jobs.length);
 
-  const uniqueTypes = new Set<string>();
-  const uniqueJobs = jobs.slice(150, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
-
-  const uniqueCountries = new Set<string>();
-  const uniqueCountry = jobs.slice(0, 491).filter(cat => cat.Country && !uniqueCountries.has(cat.Country) && cat.Country.trim() !== "" && uniqueCountries.add(cat.Country));
-
-  const uniqueCompanies = new Set<string>();
-  const uniqueCompany = jobs.slice(0, 491).filter(cat => cat.Company && !uniqueCompanies.has(cat.Company) && cat.Company.trim() !== "" && uniqueCompanies.add(cat.Company));
-
-  const handleTypeClick = (type: string | undefined) => {
-    if (type === undefined) return; // Do nothing if type is undefined
-    setSelectedType(type === selectedType ? null : type);
-  };
-
-
-  const handleCompanyClick = (company: string | undefined) => {
-    if (company === undefined) return; // Ignore undefined values
-    setSelectedCompany(company === selectedCompany ? null : company);
-  };
-
-  const handleCountryClick = (country: string | undefined) => {
-    if (country === undefined) return; // Ignore undefined values
-    setSelectedCountry(country === selectedCountry ? null : country);
-  };
-
-
-
 
   if (isLoading) return <Loading />;
   if (error) return <p>{error}</p>;
@@ -108,7 +181,9 @@ const FeaturedJobs = () => {
     <Container className='py-[50px]'>
       <div className='grid md:grid-cols-12 grid-cols-1 gap-[50px]'>
         <div className='md:col-span-4 col-span-8 flex flex-col gap-[30px]'>
-          <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
+
+
+          <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
             <div className='mb-[20px]'>
               <h2 className='text-lg font-bold mb-3'>Search Jobs</h2>
               <div className='flex items-center w-full border-grey shadow-md border-[1px] px-[12px] py-[12px] rounded-[12px] bg-white'>
@@ -122,37 +197,62 @@ const FeaturedJobs = () => {
                 />
               </div>
             </div>
-
           </div>
-          <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
-            <h4 className='font-bold text-sm mb-[20px]'><span className='font-normal'>Filter by </span>Job Type</h4>
+
+
+          <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
+            <div className='flex justify-between items-center mb-[20px]'>
+              <h4 className='font-bold text-sm '><span className='font-normal'>Filter by </span>Job Type</h4>
+              <div>
+                <Button variant={'link'} className='text-blue-500' onClick={clearSelectedTypes}>Clear</Button>
+              </div>
+            </div>
+
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
                 <div className=''>
-                  {uniqueJobs.filter(cat => cat.Type !== undefined).map((cat, index) => (
-                    <Button key={index} onClick={() => handleTypeClick(cat.Type)}
-                      className={`mb-2 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 ${selectedType === cat.Type ? 'font-bold' : ''}`}>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id={`checkbox-${index}`} />
-                        <label
-                          htmlFor={`checkbox-${index}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          {cat.Type}
-                        </label>
-                      </div>
 
-                    </Button>
-                  ))}
+
+                  {uniqueJobs
+                    .filter(cat => cat.Type !== undefined)
+                    .map((cat, index) => (
+                      <div
+                        key={index}
+                        className={`mb-2 py-4 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 
+      `}>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id={cat.Type} onClick={() => handleTypeClick(cat.Type)} />
+                          <label
+                            htmlFor={cat.Type}
+                            className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer 
+                            ${selectedType && cat.Type && selectedType.includes(cat.Type) ? 'font-bold' : ''}`}
+                          >
+                            {cat.Type}
+                          </label>
+                        </div>
+                      </div>
+                    ))
+                  }
+
+
+
 
                 </div>
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
             </div>
           </div>
-          <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
+
+
+          <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
             <div className='mb-4'>
-              <h4 className='font-bold text-sm mb-[20px]'><span className='font-normal'>Filter by </span>Location</h4>
+              <div className='flex justify-between items-center mb-[20px]'>
+                <h4 className='font-bold text-sm'><span className='font-normal'>Filter by </span>Location</h4>
+                <div>
+                  <Button variant={'link'} className='text-blue-500' onClick={clearSelectedCountries}>Clear</Button>
+                </div>
+              </div>
+
               <div className='flex items-center w-full px-[12px] py-[6px] rounded-[12px] bg-lightGrey'>
                 <Search className='w-4 h-4' />
                 <Input
@@ -167,29 +267,76 @@ const FeaturedJobs = () => {
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
                 <div className='flex flex-col items-start gap-4'>
-                  {uniqueCountry.filter(cat => cat.Country && cat.Country.toLowerCase().includes(countryTerm.toLowerCase()))
+
+
+                  {uniqueCountry
+                    .filter(cat => cat.Country !== undefined && cat.Country.toLowerCase().includes(countryTerm.toLowerCase()))
                     .map((cat, index) => (
-                      <Button key={index} variant={'outline'} onClick={() => handleCountryClick(cat.Country)} className={`border-none hover:bg-transparent ${selectedCountry === cat.Country ? 'bg-transparent' : ''}`}>{cat.Country}</Button>
-                    ))}
+                      <Button
+                        key={index}
+                        variant={'outline'}
+                        onClick={() => cat.Country && handleCountryClick(cat.Country)} // Safeguard against undefined
+                        className={`border-none hover:bg-transparent 
+        ${selectedCountry && cat.Country && selectedCountry.includes(cat.Country) ? 'bg-transparent font-bold' : ''}`}
+                      >
+                        {cat.Country}
+                      </Button>
+                    ))
+                  }
+
+
+
+
                 </div>
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
             </div>
           </div>
-          <div className='sm:p-[20px] p-[15px] bg-white border rounded-xl '>
-          <h4 className='font-bold text-sm mb-[20px]'><span className='font-normal'>Filter by </span>Companies</h4>
+
+
+          <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
+          <div className='flex justify-between items-center mb-[20px]'>
+          <h4 className='font-bold text-sm '><span className='font-normal'>Filter by </span>Companies</h4>
+                <div>
+                  <Button variant={'link'} className='text-blue-500' onClick={clearSelectedCompanies}>Clear</Button>
+                </div>
+              </div>
+            
             <div className='flex flex-wrap gap-4'>
               <ScrollArea className="h-[200px] w-full ">
                 <div className='flex flex-col items-start gap-4'>
-                  {uniqueCompany.filter(cat => cat.Company !== undefined).map((cat, index) => (
-                    <Button key={index} className={`bg-transparent text-black hover:bg-gray-200 ${selectedCompany === cat.Company ? 'font-bold' : ''}`} size={'sm'} variant={'default'} onClick={() => handleCompanyClick(cat.Company)}>{cat.Company}</Button>
-                  ))}
+
+
+                  {uniqueCompany
+                    .filter(cat => cat.Company !== undefined) // Ensure Company is not undefined
+                    .map((cat, index) => (
+                      <Button
+                        key={index}
+                        className={`bg-transparent text-black hover:bg-gray-200 
+        ${selectedCompany && cat.Company && selectedCompany.includes(cat.Company) ? 'font-bold' : ''}`} // Check for inclusion if selectedCompany is an array
+                        size={'sm'}
+                        variant={'default'}
+                        onClick={() => cat.Company && handleCompanyClick(cat.Company)} // Safeguard against undefined
+                      >
+                        {cat.Company}
+                      </Button>
+                    ))
+                  }
+
+
+
                 </div>
-                <ScrollBar orientation="vertical" />
+                <ScrollBar
+                  orientation="vertical" />
               </ScrollArea>
             </div>
           </div>
         </div>
+
+
+
+
+
         {/* 2nd Grid-Col */}
         <div className='md:col-span-1 col-span-8 flex items-center justify-center'>
           <Separator orientation="vertical" className='md:flex hidden' />
@@ -202,7 +349,7 @@ const FeaturedJobs = () => {
           </div>
           {filteredJobs.slice(displayIndex, displayIndex + 10).map((job, index) => (
             <Link key={index} href={`/job/${job.id}`}>
-              <div key={index} className='border bg-white sm:px-[30px] px-[15px] py-[15px] rounded-xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
+              <div key={index} className='border bg-white sm:px-[20px] px-[15px] py-[20px] rounded-3xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
                 <div>
                   <h2 className='text-xl font-bold mb-2'>{job.Role}</h2>
                   <div className='flex sm:flex-row flex-col items-start gap-4'>
@@ -248,7 +395,7 @@ const FeaturedJobs = () => {
                     <Clock className='w-4 h-4' />
                     <p className='text-sm text-grey'>{job.postingDate ? `${job.postingDate.toLocaleString()}` : 'N/A'}</p>
                   </div>
-                  <Button className=''>
+                  <Button className='rounded-xl'>
                     <Link target='_blank' href={job.jobLink ? new URL(job.jobLink).toString() : ''}>
                       Apply Now
                     </Link>

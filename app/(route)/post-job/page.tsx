@@ -7,16 +7,16 @@ import React from 'react'
 
 const plan = [
     {
-        text: '5 Job Postings',
+        text: 'Live in 24h',
     },
     {
-        text: '90 Days Duration Each',
+        text: 'Promoted for 30 days',
     },
     {
-        text: 'Job Alert Emails',
+        text: 'Pinned to top of search and relevant pages',
     },
     {
-        text: 'Candidates Database',
+        text: 'Inclusion in Weekly Jobs Newsletter',
     }
 ]
 
@@ -25,8 +25,7 @@ const page = () => {
         <section className='py-[100px]'>
             <Container className='mt-[100px] flex flex-col gap-[50px] items-center'>
                 <div className='flex flex-col items-center gap-4'>
-                    <h1 className='sm:text-[36px] text-[24px] font-bold text-center'>Check our amazing plans, choose the best one for you</h1>
-                    <p className='sm:text-lg text-sm text-center text-grey'>Post or Featured you job for 30 days for free</p>
+                    <h1 className='sm:text-[36px] text-[24px] font-bold text-center'>Feature your job for 30 days for free</h1>
                 </div>
 
                 <div className='flex flex-col items-center bg-white border rounded-xl sm:w-[400px] w-full gap-[20px]'>
@@ -34,7 +33,7 @@ const page = () => {
                     <div className='flex w-full gap-[20px] flex-col items-center p-[20px]'>
                         <p className='font-bold text-sm'>Recommended</p>
                         <div>
-                            <h2 className='text-center text-xl mb-2'>Basic Boosted</h2>
+                            <h2 className='text-center text-xl mb-2'>Basic</h2>
                             <p className='text-center text-grey text-sm'>For 1 Job</p>
                         </div>
                         <div>
