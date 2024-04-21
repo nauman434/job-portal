@@ -28,7 +28,7 @@ const Page = () => {
 
     return (
         <div>
-            {job ? <p>{`Job Title: ${job.Job}, Description: ${job.jobDescription}`}</p> : <p>No job found or still loading...</p>}
+            {/* {job ? <p>{`Job Title: ${job.Job}, Description: ${job.jobDescription}`}</p> : <p>No job found or still loading...</p>} */}
         </div>
     );
 }

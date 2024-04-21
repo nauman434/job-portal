@@ -59,7 +59,7 @@ const Footer = () => {
         </div>
         {/* Bottom text links */}
         <div className="flex sm:flex-row flex-col gap-4 justify-between items-center mt-10 text-gray-600">
-          <p>© 2024 miners jobs. All Rights Reserved.</p>
+          <p>© 2024 Miners Jobs. All Rights Reserved.</p>
           <div className="flex space-x-6">
             <Link href="/terms-of-service">
               <p className="hover:text-gray-900 transition duration-150 ease-in-out">Terms of Service</p>
