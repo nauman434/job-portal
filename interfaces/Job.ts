@@ -1,17 +1,16 @@
 // interfaces/Job.ts
 export interface Job {
-    id: string;
-    Job?: string;
-    Company?: string;
-    Role?: string;
-    Country?: string;
-    State?: string;
-    City?: string;
-    Status?: string;
-    Type?: string;
-    Salary?: number;
-    postingDate?: string;
-    jobLink?: string;
-    jobDescription?: string;
-  }
-  
+  Id: string;
+  Company: string;
+  Role: string;
+  Type: string;
+  Country: string;
+  State: string;
+  City: string;
+  Status: string;
+  Salary: string;
+  postingDate: string;     
+  closingDate: string;  
+  jobLink: string;
+  HowToApply: string;
+}

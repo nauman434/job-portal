@@ -1,95 +1,77 @@
-import React from 'react'
-import Container from './container'
-import Image from 'next/image'
-import Link from 'next/link'
-import { NavbarRoutes } from './navbar-routes'
-import { Button } from './ui/button'
-import { Facebook, Instagram, LinkedinIcon, Twitter } from 'lucide-react'
-
-const footerRoutes = [
-  {
-    name: "Jobs",
-    path: '/'
-  },
-  {
-    name: "Companies",
-    path: '/companies'
-  },
-  {
-    name: "Career Advice",
-    path: '/blogs'
-  },
-  {
-    name: "Contact Us",
-    path: '/blogs'
-  },
-  {
-    name: "Terms of Service",
-    path: '/terms-of-service'
-  },
-  {
-    name: "Privacy Policy",
-    path: '/privacy-policy'
-  },
-]
-
-const socialMedia = [
-  {
-    icon: LinkedinIcon,
-    path: '/'
-  },
-  {
-    icon: Facebook,
-    path: '/'
-  },
-  {
-    icon: Instagram,
-    path: '/'
-  },
-  {
-    icon: Twitter,
-    path: '/'
-  },
-]
+import Link from 'next/link';
+import Image from 'next/image';
+import {
+  Linkedin,
+  Facebook,
+  Instagram,
+  Twitter,
+} from 'lucide-react';
+import Container from './container';
 
 const Footer = () => {
   return (
-    <footer className='pt-[50px] border-t-darkGrey border-t-[1px]'>
-      <Container className='flex flex-col gap-8'>
-        <div className='flex sm:flex-row flex-col gap-[30px] items-start justify-between'>
-          <div>
-            <Link href={'/'}>
-              <Image src={'/miners.svg'} width={150} height={150} alt='Logo' />
+    <footer className="bg-white border-t pt-10 pb-10 mt-10">
+      <Container >
+        <div className="flex md:flex-row flex-col justify-between items-center gap-6">
+          {/* Logo and name */}
+          <div className="flex items-center">
+            <Image src="/miners.svg" alt="Miners Jobs Logo" width={150} height={150} />
+            
+          </div>
+          {/* Navigation links */}
+          <div className="flex sm:flex-row flex-col sm:space-x-6 space-x-0 items-center justify-center gap-4">
+            <Link href="/jobs">
+              <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Jobs</p>
+            </Link>
+            <Link href="/companies">
+              <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Companies</p>
+            </Link>
+            <Link href="/career-advice">
+              <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Career Advice</p>
+            </Link>
+            <Link href="/contact-us">
+              <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Contact Us</p>
             </Link>
           </div>
-          <div className='flex sm:flex-row flex-col  gap-4'>
-            <div className='grid grid-cols-2 grid-rows-3 gap-4'>
-              {footerRoutes.map((route, index) => (
-                <Link key={index} href={route.path}>
-                  <Button variant={'link'}>{route.name}</Button>
-                </Link>
-              ))}
-            </div>
-            <div className='flex gap-4 sm:flex-col flex-row'>
-              {socialMedia.map((social, index) => (
-                <Link key={index} href={social.path} >
-                  <Button variant={'outline'} size={'icon'} className='rounded-full'>
-                    <social.icon className='w-[20px] h-[20px]' />
-                  </Button>
-                </Link>
-              ))}
-            </div>
+          {/* Social media icons */}
+          <div className="flex items-center space-x-4">
+            <Link href="https://www.linkedin.com">
+              <p className="text-gray-600 hover:text-blue-500 transition duration-150 ease-in-out">
+                <Linkedin size={24} />
+              </p>
+            </Link>
+            <Link href="https://www.facebook.com">
+              <p className="text-gray-600 hover:text-blue-700 transition duration-150 ease-in-out">
+                <Facebook size={24} />
+              </p>
+            </Link>
+            <Link href="https://www.instagram.com">
+              <p className="text-gray-600 hover:text-pink-500 transition duration-150 ease-in-out">
+                <Instagram size={24} />
+              </p>
+            </Link>
+            <Link href="https://www.twitter.com">
+              <p className="text-gray-600 hover:text-blue-400 transition duration-150 ease-in-out">
+                <Twitter size={24} />
+              </p>
+            </Link>
           </div>
-
         </div>
-        <div className='py-[30px] border-t-grey border-t-[1px]'>
-          <p className='text-center text-[15px] text-darkGrey'>
-            © 2024 miners jobs. All Rights Reserved.
-          </p>
+        {/* Bottom text links */}
+        <div className="flex sm:flex-row flex-col gap-4 justify-between items-center mt-10 text-gray-600">
+          <p>© 2024 miners jobs. All Rights Reserved.</p>
+          <div className="flex space-x-6">
+            <Link href="/terms-of-service">
+              <p className="hover:text-gray-900 transition duration-150 ease-in-out">Terms of Service</p>
+            </Link>
+            <Link href="/privacy-policy">
+              <p className="hover:text-gray-900 transition duration-150 ease-in-out">Privacy Policy</p>
+            </Link>
+          </div>
         </div>
       </Container>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

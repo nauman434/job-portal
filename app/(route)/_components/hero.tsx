@@ -15,38 +15,38 @@ const Hero = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchJobs = async () => {
-            const cachedJobs = localStorage.getItem('cachedJobs');
-            const cachedTime = localStorage.getItem('cachedTime');
+    // useEffect(() => {
+    //     const fetchJobs = async () => {
+    //         const cachedJobs = localStorage.getItem('cachedJobs');
+    //         const cachedTime = localStorage.getItem('cachedTime');
 
-            if (cachedJobs && cachedTime && new Date().getTime() - new Date(parseInt(cachedTime)).getTime() < 3600000) {
-                setJobs(JSON.parse(cachedJobs));
-                setIsLoading(false);
-            } else {
-                try {
-                    const response = await fetch('/api/jobs');
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch jobs: ' + response.statusText);
-                    }
-                    const data = await response.json();
-                    setJobs(data);
-                    localStorage.setItem('cachedJobs', JSON.stringify(data));
-                    localStorage.setItem('cachedTime', new Date().getTime().toString());
-                } catch (error) {
-                    console.error('Failed to fetch jobs:', error);
-                    setError('Failed to load jobs. Please try again later.');
-                } finally {
-                    setIsLoading(false);
-                }
-            }
-        };
+    //         if (cachedJobs && cachedTime && new Date().getTime() - new Date(parseInt(cachedTime)).getTime() < 3600000) {
+    //             setJobs(JSON.parse(cachedJobs));
+    //             setIsLoading(false);
+    //         } else {
+    //             try {
+    //                 const response = await fetch('/api/jobs');
+    //                 if (!response.ok) {
+    //                     throw new Error('Failed to fetch jobs: ' + response.statusText);
+    //                 }
+    //                 const data = await response.json();
+    //                 setJobs(data);
+    //                 localStorage.setItem('cachedJobs', JSON.stringify(data));
+    //                 localStorage.setItem('cachedTime', new Date().getTime().toString());
+    //             } catch (error) {
+    //                 console.error('Failed to fetch jobs:', error);
+    //                 setError('Failed to load jobs. Please try again later.');
+    //             } finally {
+    //                 setIsLoading(false);
+    //             }
+    //         }
+    //     };
 
-        fetchJobs();
-    }, []);
+    //     fetchJobs();
+    // }, []);
 
-    const uniqueTypes = new Set<string>();
-    const uniqueJobs = jobs.slice(0, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
+    // const uniqueTypes = new Set<string>();
+    // const uniqueJobs = jobs.slice(0, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
 
     return (
         <section className='pt-[100px]' >
@@ -65,7 +65,7 @@ const Hero = () => {
                             </Button>
                         ))}
                     </div> */}
-                    {isLoading && <Loading />}
+                    {/* {isLoading && <Loading />} */}
                     {/* {error && <p>{error}</p>} */}
                     
                 </div>

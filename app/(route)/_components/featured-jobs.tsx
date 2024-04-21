@@ -45,27 +45,30 @@ const FeaturedJobs = () => {
 
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      // Always fetch new data
+    const fetchData = async () => {
       try {
         const response = await fetch('/api/jobs');
-        if (!response.ok) {
-          throw new Error('Failed to fetch jobs: ' + response.statusText);
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+
+        const jsonData = await response.json();
+        // console.log('Fetched Data:', jsonData);
+
+        if (jsonData.data && Array.isArray(jsonData.data)) {
+          setJobs(jsonData.data);
+        } else {
+          throw new Error('Data format error: Expected an array');
         }
-        const data = await response.json();
-        setJobs(data);
-      } catch (error) {
-        console.error('Failed to fetch jobs:', error);
-        setError('Failed to load jobs. Please try again later.');
-      } finally {
-        setIsLoading(false);
+      } catch (error: any) {
+        console.error('Fetch Error:', error);
+        setError(error.message || 'An error occurred');
       }
     };
 
-    fetchJobs();
+    fetchData();
   }, []);
 
 
+  // console.log('jobs',jobs)
 
   const filteredJobs = jobs.filter(job => {
     return (!selectedType || selectedType.length === 0 || (job.Type && selectedType.includes(job.Type))) &&
@@ -74,18 +77,20 @@ const FeaturedJobs = () => {
       job.Role?.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
+  console.log('Filtered Jobs', filteredJobs)
+
 
 
 
   // Unique Filter with no repeation
   const uniqueTypes = new Set<string>();
-  const uniqueJobs = jobs.slice(150, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
+  const uniqueJobs = jobs.filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
 
   const uniqueCountries = new Set<string>();
-  const uniqueCountry = jobs.slice(0, 491).filter(cat => cat.Country && !uniqueCountries.has(cat.Country) && cat.Country.trim() !== "" && uniqueCountries.add(cat.Country));
+  const uniqueCountry = jobs.filter(cat => cat.Country && !uniqueCountries.has(cat.Country) && cat.Country.trim() !== "" && uniqueCountries.add(cat.Country));
 
   const uniqueCompanies = new Set<string>();
-  const uniqueCompany = jobs.slice(0, 491).filter(cat => cat.Company && !uniqueCompanies.has(cat.Company) && cat.Company.trim() !== "" && uniqueCompanies.add(cat.Company));
+  const uniqueCompany = jobs.filter(cat => cat.Company && !uniqueCompanies.has(cat.Company) && cat.Company.trim() !== "" && uniqueCompanies.add(cat.Company));
 
 
 
@@ -175,8 +180,10 @@ const FeaturedJobs = () => {
   const endIndex = Math.min(displayIndex + 10, jobs.length);
 
 
-  if (isLoading) return <Loading />;
-  if (error) return <p>{error}</p>;
+  // if (isLoading) return <Loading />;
+  // if (error) return <p>{error}</p>;
+
+
 
 
   return (
@@ -385,7 +392,7 @@ const FeaturedJobs = () => {
             <p className='text-grey'>{filteredJobs.length} recent jobs are posted</p>
           </div>
           {filteredJobs.slice(displayIndex, displayIndex + 10).map((job, index) => (
-            <Link key={index} href={`/job/${job.id}`}>
+            <Link key={index} href={`/job/${job.Id}`}>
               <div key={index} className='border bg-white sm:px-[20px] px-[15px] py-[20px] rounded-3xl flex flex-col gap-[20px] hover:shadow-lg transition ease-linear duration-75'>
                 <div>
                   <h2 className='text-xl font-bold mb-2'>{job.Role}</h2>
@@ -397,40 +404,32 @@ const FeaturedJobs = () => {
                 </div>
                 <div>
                   <p className='text-grey text-sm mb-4'>
-                    {job.jobDescription?.slice(0, 100)}
+                    {job.HowToApply?.slice(0, 100)}
                   </p>
-                  <Button disabled className='bg-gray-200 text-black'>{job.Type || "Not Disclosed"}</Button>
+                  <div className='flex gap-4'>
+                    <Button disabled className='bg-gray-200 text-black'>{job.Type || "Not Disclosed"}</Button>
+                    <Button disabled className='bg-gray-200 text-black'>{job.Status || "Not Disclosed"}</Button>
+                  </div>
                 </div>
                 <div className='w-full h-[1px] bg-gray-200' />
-                <div className='grid sm:grid-cols-3 grid-cols-1 '>
+                <div className='grid sm:grid-cols-4 grid-cols-1 '>
                   <div className='sm:hidden flex mb-4 justify-between flex-wrap gap-3'>
                     <p className='font-bold flex items-center text-sm'>{job.Salary ? `${job.Salary.toLocaleString()}` : 'Salary Not Disclosed'}</p>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Button variant={'outline'} className=''>
-                            <div className='flex items-center gap-2'>
-                              <Clock className='w-4 h-4' />
-                              <p className='text-sm text-grey'>{job.postingDate ? `${job.postingDate.toLocaleString()}` : 'N/A'}</p>
-                            </div>
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Posted Time</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <div className='flex items-center gap-2'>
+                      <p className='text-sm text-grey'>
+                      <span className='text-black font-bold'>Posting Date:</span> {job.postingDate.slice(0,10)}
+                      </p>
 
-
-
-
+                    </div>
 
                   </div>
 
                   <p className='font-bold sm:flex hidden items-center text-sm'>{job.Salary ? `${job.Salary.toLocaleString()}` : 'Salary Not Disclosed'}</p>
-                  <div className='sm:flex hidden items-center gap-2'>
-                    <Clock className='w-4 h-4' />
-                    <p className='text-sm text-grey'>{job.postingDate ? `${job.postingDate.toLocaleString()}` : 'N/A'}</p>
+                  <div className='sm:flex hidden col-span-2  items-center gap-2'>
+                    <p className='text-sm text-grey'>
+                      <span className='text-black font-bold'>Posting Date:</span> {job.postingDate.slice(0,10)}
+                    </p>
+
                   </div>
                   <Button className='rounded-xl'>
                     <Link target='_blank' href={job.jobLink ? new URL(job.jobLink).toString() : ''}>
