@@ -25,7 +25,7 @@ const FeaturedBlogs = async () => {
     <Container className="pt-[100px]">
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-[64px] text-start font-bold">The Blogs</h1>
+          <h1 className="text-[64px] text-start font-bold">Blogs Posts</h1>
           <Button variant={'link'} className='flex gap-2'>
             <Link href={'/blogs'} className="flex items-center gap-2">
               View All

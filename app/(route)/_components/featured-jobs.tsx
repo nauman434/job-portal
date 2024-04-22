@@ -2,7 +2,7 @@
 
 import Container from '@/components/container'
 import { Button } from '@/components/ui/button'
-import { Clock, Search } from 'lucide-react'
+import { Clock, Filter, Search } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import Loading from '../loading';
 import { Job } from '@/interfaces/Job';
@@ -24,6 +24,7 @@ function truncateText(text: string, limit: number): string {
 const FeaturedJobs = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filter, setFilter] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
 
@@ -147,6 +148,10 @@ const FeaturedJobs = () => {
   };
 
 
+  const filterClick = () => {
+    setFilter(!filter)
+  }
+
 
 
 
@@ -189,7 +194,13 @@ const FeaturedJobs = () => {
   return (
     <Container className='py-[50px]'>
       <div className='grid md:grid-cols-12 grid-cols-1 gap-[50px]'>
-        <div className='md:col-span-4 col-span-8 flex flex-col gap-[30px]'>
+        <div className='md:hidden flex'>
+          <Button className='flex gap-2 items-center' onClick={filterClick}>
+            <Filter size={16} />
+            Filter
+          </Button>
+        </div>
+        <div className='md:col-span-4 col-span-8 md:flex hidden flex-col gap-[30px]'>
 
 
           <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
@@ -377,6 +388,196 @@ const FeaturedJobs = () => {
           </div>
         </div>
 
+        {filter ? (
+          <div className='md:col-span-4 col-span-8 md:hidden flex flex-col gap-[30px]'>
+
+
+            <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
+              <div className='mb-[20px]'>
+                <h2 className='text-lg font-bold mb-3'>Search Jobs</h2>
+                <div className='flex items-center w-full border-grey shadow-md border-[1px] px-[12px] py-[12px] rounded-[12px] bg-white'>
+                  <Search className='w-4 h-4' />
+                  <Input
+                    type='text'
+                    placeholder='Job title, keyword'
+                    className='border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+                    value={searchTerm}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+
+
+            <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
+              <div className='flex justify-between items-center mb-[20px]'>
+                <h4 className='font-bold text-sm '><span className='font-normal'>Filter by </span>Job Type</h4>
+                <div>
+                  <Button variant={'link'} className='text-blue-500' onClick={clearSelectedTypes}>Clear</Button>
+                </div>
+              </div>
+
+              <div className='flex items-center w-full px-[12px] py-[6px] rounded-[12px] bg-lightGrey mb-[20px]'>
+                <Search className='w-4 h-4' />
+                <Input
+                  type='text'
+                  placeholder='e.g. "Maintenance"'
+                  className='border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent'
+                  value={jobTerm}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setJobTerm(e.target.value)}
+                />
+              </div>
+
+              <div className='flex flex-wrap gap-4'>
+                <ScrollArea className="h-[150px] w-full ">
+                  <div className=''>
+
+
+                    {uniqueJobs
+                      .filter(cat => cat.Type !== undefined && cat.Type.toLowerCase().includes(jobTerm.toLowerCase()))
+                      .map((cat, index) => (
+                        <div
+                          key={index}
+                          className={`py-4 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 
+      `}>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox id={cat.Type} onClick={() => handleTypeClick(cat.Type)} />
+                            <label
+                              htmlFor={cat.Type}
+                              className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer 
+                            ${selectedType && cat.Type && selectedType.includes(cat.Type) ? 'font-bold' : ''}`}
+                            >
+                              {cat.Type}
+                            </label>
+                          </div>
+                        </div>
+                      ))
+                    }
+
+
+
+
+                  </div>
+                  <ScrollBar orientation="vertical" />
+                </ScrollArea>
+              </div>
+            </div>
+
+
+            <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
+              <div className='mb-4'>
+                <div className='flex justify-between items-center mb-[20px]'>
+                  <h4 className='font-bold text-sm'><span className='font-normal'>Filter by </span>Location</h4>
+                  <div>
+                    <Button variant={'link'} className='text-blue-500' onClick={clearSelectedCountries}>Clear</Button>
+                  </div>
+                </div>
+
+                <div className='flex items-center w-full px-[12px] py-[6px] rounded-[12px] bg-lightGrey'>
+                  <Search className='w-4 h-4' />
+                  <Input
+                    type='text'
+                    placeholder='Job title, keyword'
+                    className='border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent'
+                    value={countryTerm}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCountryTerm(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className='flex flex-wrap gap-4'>
+                <ScrollArea className="h-[150px] w-full ">
+                  <div className='flex flex-col items-start gap-4'>
+
+
+                    {uniqueCountry
+                      .filter(cat => cat.Country !== undefined && cat.Country.toLowerCase().includes(countryTerm.toLowerCase()))
+                      .map((cat, index) => (
+                        <div
+                          key={index}
+                          className={`py-2 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 
+      `}>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox id={cat.Type} onClick={() => handleTypeClick(cat.Type)} />
+                            <label
+                              htmlFor={cat.Type}
+                              className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer 
+                            ${selectedCountry && cat.Country && selectedCountry.includes(cat.Country) ? 'font-bold' : ''}`}
+                            >
+                              {cat.Country}
+                            </label>
+                          </div>
+                        </div>
+                      ))
+                    }
+
+
+
+
+                  </div>
+                  <ScrollBar orientation="vertical" />
+                </ScrollArea>
+              </div>
+            </div>
+
+
+            <div className='sm:p-[20px] p-[15px] bg-white border rounded-3xl '>
+              <div className='flex justify-between items-center mb-[20px]'>
+                <h4 className='font-bold text-sm '><span className='font-normal'>Filter by </span>Companies</h4>
+                <div>
+                  <Button variant={'link'} className='text-blue-500' onClick={clearSelectedCompanies}>Clear</Button>
+                </div>
+              </div>
+
+              <div className='flex items-center w-full px-[12px] py-[6px] rounded-[12px] bg-lightGrey mb-[20px]'>
+                <Search className='w-4 h-4' />
+                <Input
+                  type='text'
+                  placeholder='Job title, keyword'
+                  className='border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent'
+                  value={companyTerm}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCompanyTerm(e.target.value)}
+                />
+              </div>
+
+              <div className='flex flex-wrap gap-4'>
+                <ScrollArea className="h-[150px] w-full ">
+                  <div className='flex flex-col items-start gap-4'>
+
+
+                    {uniqueCompany
+                      .filter(cat => cat.Company !== undefined && cat.Company.toLowerCase().includes(companyTerm.toLowerCase()))
+                      .map((cat, index) => (
+                        <div
+                          key={index}
+                          className={` py-2 flex flex-col bg-transparent text-black p-0 hover:bg-transparent hover:font-bold transition ease-linear duration-75 
+      `}>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox id={cat.Type} onClick={() => handleTypeClick(cat.Type)} />
+                            <label
+                              htmlFor={cat.Type}
+                              className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer 
+                            ${selectedCompany && cat.Company && selectedCompany.includes(cat.Company) ? 'font-bold' : ''}`}
+                            >
+                              {cat.Company}
+                            </label>
+                          </div>
+                        </div>
+
+
+                      ))
+                    }
+
+
+
+                  </div>
+                  <ScrollBar
+                    orientation="vertical" />
+                </ScrollArea>
+              </div>
+            </div>
+          </div>
+        ) : ''}
+
 
 
 
@@ -389,7 +590,7 @@ const FeaturedJobs = () => {
         <div className='md:col-span-7 col-span-8 flex flex-col gap-[30px]'>
           <div>
             <h2 className='text-3xl font-bold mb-2'>Recent Jobs</h2>
-            <p className='text-grey'>{filteredJobs.length} recent jobs are posted</p>
+            <p className='text-darkGrey'>{filteredJobs.length} recent jobs are posted</p>
           </div>
           {filteredJobs.slice(displayIndex, displayIndex + 10).map((job, index) => (
             <Link key={index} href={`/job/${job.Id}`}>
@@ -397,7 +598,7 @@ const FeaturedJobs = () => {
                 <div>
                   <h2 className='text-xl font-bold mb-2'>{job.Role}</h2>
                   <div className='flex sm:flex-row flex-col items-start gap-4'>
-                    <p className='text-grey '>{job.Company || 'Company Not Listed'}</p>
+                    <p className='text-darkGrey font-bold '>{job.Company || 'Company Not Listed'}</p>
                     <p className=''><span className='p-1 bg-gray-100 text-black mr-2 rounded-sm'>{job.City}</span> <span className='p-1 bg-gray-100 text-black mr-2 rounded-sm'>{job.State}</span>  <span className='font-bold'>{job.Country}</span></p>
                   </div>
 
@@ -417,7 +618,7 @@ const FeaturedJobs = () => {
                     <p className='font-bold flex items-center text-sm'>{job.Salary ? `${job.Salary.toLocaleString()}` : 'Salary Not Disclosed'}</p>
                     <div className='flex items-center gap-2'>
                       <p className='text-sm text-grey'>
-                      <span className='text-black font-bold'>Posting Date:</span> {job.postingDate.slice(0,10)}
+                        <span className='text-black font-bold'>Posting Date:</span> {job.postingDate.slice(0, 10)}
                       </p>
 
                     </div>
@@ -427,7 +628,7 @@ const FeaturedJobs = () => {
                   <p className='font-bold sm:flex hidden items-center text-sm'>{job.Salary ? `${job.Salary.toLocaleString()}` : 'Salary Not Disclosed'}</p>
                   <div className='sm:flex hidden col-span-2  items-center gap-2'>
                     <p className='text-sm text-grey'>
-                      <span className='text-black font-bold'>Posting Date:</span> {job.postingDate.slice(0,10)}
+                      <span className='text-black font-bold'>Posting Date:</span> {job.postingDate.slice(0, 10)}
                     </p>
 
                   </div>
