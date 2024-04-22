@@ -29,7 +29,7 @@ export const NavbarRoutes = () => {
             {routes.map((route, index) => (
                 <div key={index}>
                     <Link href={route.path} >
-                        <p className="text-sm text-primary">{route.name}</p>
+                        <p className="text-sm text-white text-primary">{route.name}</p>
                     </Link>
                 </div>
             ))}

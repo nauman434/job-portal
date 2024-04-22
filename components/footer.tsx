@@ -15,7 +15,7 @@ const Footer = () => {
         <div className="flex md:flex-row flex-col justify-between items-center gap-6">
           {/* Logo and name */}
           <div className="flex items-center">
-            <Image src="/miners.svg" alt="Miners Jobs Logo" width={150} height={150} />
+            <Image src="/miners-black.svg" alt="Miners Jobs Logo" width={150} height={150} />
             
           </div>
           {/* Navigation links */}

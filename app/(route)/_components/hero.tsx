@@ -48,15 +48,41 @@ const Hero = () => {
     // const uniqueTypes = new Set<string>();
     // const uniqueJobs = jobs.slice(0, 490).filter(cat => cat.Type && !uniqueTypes.has(cat.Type) && cat.Type.trim() !== "" && uniqueTypes.add(cat.Type));
 
+    const backgroundStyle = {
+        position: 'relative' as 'relative',
+        paddingTop: '100px',
+        paddingBottom: '100px',
+        backgroundImage: 'url(/img-1.jpg)',
+        backgroundSize: 'cover' as 'cover',
+        backgroundPosition: 'center' as 'center'
+    };
+
+    const overlayStyle = {
+        position: 'absolute' as 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        zIndex: 0
+    };
+
+    const contentStyle = {
+        position: 'relative' as 'relative',
+        zIndex: 1
+    };
+
     return (
-        <section className='pt-[100px]' >
-            <Container className=''>
-                <div className='flex flex-col justify-center items-center pt-[50px] pb-[30px]  gap-[50px]'>
-                    <div className='md:w-[60%] w-full flex flex-col gap-[20px]'>
-                        <h1 className='sm:text-[48px] text-xl leading-[150%]  font-bold text-center mb-4'>Welcome to largest Mining jobs site in the world.</h1>
-                        <p className='sm:text-lg text-sm text-center text-grey'>Discover a Wealth of Career Opportunities in the Thriving World of Mining: Explore High-Paying Roles, International Ventures, and Exciting Projects Await</p>
-                    </div>
-                    {/* <div className='flex gap-3 flex-wrap items-center justify-center'>
+        <section style={backgroundStyle}>
+            <div style={overlayStyle} />
+            <div style={contentStyle}>
+                <Container className=''>
+                    <div className='flex flex-col justify-center items-center pt-[50px] pb-[30px]  gap-[50px]'>
+                        <div className='md:w-[60%] w-full flex flex-col gap-[20px]'>
+                            <h1 className='sm:text-[48px] text-xl leading-[150%]  font-bold text-center mb-4 text-white'>Welcome to largest Mining jobs site in the world.</h1>
+                            <p className='sm:text-lg text-sm text-center text-gray-200'>Discover a Wealth of Career Opportunities in the Thriving World of Mining: Explore High-Paying Roles, International Ventures, and Exciting Projects Await</p>
+                        </div>
+                        {/* <div className='flex gap-3 flex-wrap items-center justify-center'>
                         {uniqueJobs.slice(0, 10).map((cat, index) => (
                             <Button key={index} size={'sm'} variant="outline" className='bg-transparent text-xs h-[28px]  rounded-full'>
                                 <Link href={`/`}>
@@ -65,11 +91,12 @@ const Hero = () => {
                             </Button>
                         ))}
                     </div> */}
-                    {/* {isLoading && <Loading />} */}
-                    {/* {error && <p>{error}</p>} */}
-                    
-                </div>
-            </Container>
+                        {/* {isLoading && <Loading />} */}
+                        {/* {error && <p>{error}</p>} */}
+
+                    </div>
+                </Container>
+            </div>
         </section>
     );
 }
