@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request, {params}: {params: {role: string}}) {
   try {
     const decodedRole = decodeURIComponent(params.role.trim());
-    console.log(`Decoded Role: '${decodedRole}'`);  // Ensure it matches expected format
+    //console.log(`Decoded Role: '${decodedRole}'`);  // Ensure it matches expected format
 
     const jobs = await db.job.findMany({
       where: {

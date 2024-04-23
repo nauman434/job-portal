@@ -63,7 +63,7 @@ export async function generateMetadata({
 const JobDetail = async ({ params }: { params: { slug: string } }) => {
   const jobs = await getJobDetail(params.slug)
 
-  console.log(jobs)
+  //console.log(jobs)
 
 
   return (
@@ -122,7 +122,7 @@ export default JobDetail
 //         }
 
 //         const jsonData: Job[] = await response.json(); // Directly expecting an array of jobs
-//         console.log('Fetched Data:', jsonData);
+//         //console.log('Fetched Data:', jsonData);
 
 //         if (jsonData.length > 0) {
 //           setJob(jsonData[0]); // Assuming you want to display the first job in the array

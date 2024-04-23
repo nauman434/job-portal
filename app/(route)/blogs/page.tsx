@@ -19,7 +19,7 @@ export const revalidate = 0;
 const Blogs = async () => {
   const posts = await client.fetch(query);
 
-  // console.log(posts)
+  // //console.log(posts)
 
   return (
     <Container className="pt-[100px]">

@@ -52,7 +52,7 @@ const FeaturedJobs = () => {
         if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
 
         const jsonData = await response.json();
-        // console.log('Fetched Data:', jsonData);
+        // //console.log('Fetched Data:', jsonData);
 
         if (jsonData.data && Array.isArray(jsonData.data)) {
           setJobs(jsonData.data);
@@ -69,7 +69,7 @@ const FeaturedJobs = () => {
   }, []);
 
 
-  // console.log('jobs',jobs)
+  // //console.log('jobs',jobs)
 
   const filteredJobs = jobs.filter(job => {
     return (!selectedType || selectedType.length === 0 || (job.Type && selectedType.includes(job.Type))) &&
@@ -78,7 +78,7 @@ const FeaturedJobs = () => {
       job.Role?.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  console.log('Filtered Jobs', filteredJobs)
+  //console.log('Filtered Jobs', filteredJobs)
 
 
 

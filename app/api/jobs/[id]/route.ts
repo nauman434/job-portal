@@ -42,7 +42,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
 //     return NextResponse.json(jobs);
 //   } catch (error) {
-//     console.log('[JOBS_GET]', error);
+//     //console.log('[JOBS_GET]', error);
 //     return new NextResponse("Internal error", { status: 500 });
 //   }
 // };

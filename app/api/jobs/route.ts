@@ -8,7 +8,7 @@ export async function GET(req: Request) {
         const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
-            // console.log(data)
+            // //console.log(data)
 
             return NextResponse.json(data);
         } else {
@@ -36,7 +36,7 @@ export async function GET(req: Request) {
 
 //     return NextResponse.json(jobs);
 //   } catch (error) {
-//     console.log('[JOBS_GET]', error);
+//     //console.log('[JOBS_GET]', error);
 //     return new NextResponse("Internal error", { status: 500 });
 //   }
 // };
