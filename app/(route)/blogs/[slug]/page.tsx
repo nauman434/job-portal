@@ -16,6 +16,35 @@ interface Props {
 
 export const revalidate = 1;
 
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const query = groq`*[_type == 'post' && slug.current == $slug][0]{
+        ...,
+        body,
+        author->
+    }`;
+  const post: Post = await client.fetch(query, { slug: params.slug });
+
+  return {
+    title: post?.title,
+    description: post?.description,
+    alternates: {
+      canonical: `/blogs/${params.slug}`,
+      languages: {
+        "en-US": `/blogs/${params.slug}`,
+      }
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post?.title,
+      description: post?.description,
+      images: [urlFor(post?.mainImage).url()],
+      siteId: "0000328462",
+      creator: "@nauman",
+      creatorId: "328462"
+    }
+  };
+}
+
 export const generateStaticParams = async () => {
   const query = groq`*[_type == 'post']{
         slug
@@ -49,7 +78,7 @@ const SlugPage = async ({ params: { slug } }: Props) => {
           <div className="w-full mb-6">
             <div className="w-full flex items-center justify-center mb-24">
               <div className=" max-w-[900px]">
-                <h1 className="text-[54px] text-center font-medium">{post.title}</h1>
+                <h1 className="text-[54px] text-start font-medium">{post.title}</h1>
               </div>
             </div>
             <span className="text-[16px] font-mono text-gray-500">{new Date(post?._createdAt).toLocaleDateString(

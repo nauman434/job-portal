@@ -598,7 +598,7 @@ const FeaturedJobs = () => {
                 <div>
                   <h2 className='text-xl font-bold mb-2'>{job.Role}</h2>
                   <div className='flex sm:flex-row flex-col items-start gap-4'>
-                    <p className='text-darkGrey font-bold '>{job.Company || 'Company Not Listed'}</p>
+                    <p className='text-gray-400 font-bold '>{job.Company || 'Company Not Listed'}</p>
                     <p className=''><span className='p-1 bg-gray-100 text-black mr-2 rounded-sm'>{job.City}</span> <span className='p-1 bg-gray-100 text-black mr-2 rounded-sm'>{job.State}</span>  <span className='font-bold'>{job.Country}</span></p>
                   </div>
 

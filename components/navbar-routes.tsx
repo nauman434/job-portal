@@ -1,5 +1,4 @@
 'use client'
-
 import Link from "next/link";
 import { usePathname } from "next/navigation"
 
@@ -16,7 +15,6 @@ const navRoutes = [
         name: "Career Advice",
         path: '/blogs'
     },
-
 ]
 
 export const NavbarRoutes = () => {
@@ -28,12 +26,11 @@ export const NavbarRoutes = () => {
         <div className="flex gap-4">
             {routes.map((route, index) => (
                 <div key={index}>
-                    <Link href={route.path} >
-                        <p className="text-sm text-white text-primary">{route.name}</p>
+                    <Link href={route.path}>
+                        <p className={`text-sm ${pathname === '/' ? 'text-white' : 'text-black'}`}>{route.name}</p>
                     </Link>
                 </div>
             ))}
         </div>
-    )
-
+    );
 }

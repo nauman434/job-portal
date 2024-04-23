@@ -7,6 +7,9 @@ import { Separator } from '@/components/ui/separator'
 import Newsletter from './_components/newsletter'
 import BlogList from './_components/blog-list'
 
+//create metadata function with title and description
+
+
 const Home = () => {
   return (
     <main className=''>

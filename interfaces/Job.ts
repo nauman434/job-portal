@@ -14,3 +14,7 @@ export interface Job {
   jobLink: string;
   HowToApply: string;
 }
+
+
+export type JobDetailResult = { job: Job | null, error: string | null };
+
